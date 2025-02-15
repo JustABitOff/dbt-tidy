@@ -54,7 +54,7 @@ class ColumnLevelConstraint(BaseModel):
 
 
 class ColumnInfo(BaseModel):
-    name: str
+    name: str | None = None
     description: str = ""
     meta: Dict[str, Any] = {}
     data_type: str | None = None
@@ -73,7 +73,7 @@ class ColumnInfo(BaseModel):
         "month",
         "quarter",
         "year",
-    ]
+    ] | None = None
 
     model_config = ConfigDict(
         extra='allow',
@@ -110,7 +110,7 @@ class Source(BaseModel):
     freshness: FreshnessThreshold | None = None
     external: ExternalTable | None = None
     description: str | None = None
-    columns: ColumnInfo | None = None
+    columns: Dict[str, ColumnInfo] = {}
     meta: Dict[str, Any] = {}
     source_meta: Dict[str, Any] = {}
     tags: List[str] = []
@@ -118,6 +118,6 @@ class Source(BaseModel):
     patch_path: str | None = None
     unrendered_config: Dict[str, Any] = {}
     relation_name: str | None = None
-    created_at: int
+    created_at: float
     unrendered_database: str | None = None
     unrendered_schema: str | None = None

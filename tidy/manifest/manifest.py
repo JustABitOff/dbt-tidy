@@ -13,6 +13,9 @@ from tidy.manifest.nodes import (
     Snapshot,
     SqlOperation,
 )
+from tidy.manifest.sources import Source
+from tidy.manifest.macros import Macro
+
 
 class Manifest(BaseModel):
     nodes: Dict[
@@ -28,6 +31,8 @@ class Manifest(BaseModel):
             SqlOperation,
         ]
     ] | None = None
+    sources: Dict[str, Source] | None = None
+    macros: Dict[str, Macro] | None = None
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

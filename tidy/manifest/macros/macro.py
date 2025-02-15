@@ -22,7 +22,7 @@ class Macro(BaseModel):
     resource_type: Literal["macro"] = "macro"
     package_name: str
     path: str
-    origional_file_path: str
+    origional_file_path: str | None = None
     unique_id: str
     macro_sql: str
     depends_on: MacroDependsOn
@@ -31,5 +31,5 @@ class Macro(BaseModel):
     docs: DocsConfig
     patch_path: str | None = None
     arguments: List[MacroArgument] = []
-    created_at: int
+    created_at: float
     supported_languages: List[Literal["python", "sql"]] | None = None

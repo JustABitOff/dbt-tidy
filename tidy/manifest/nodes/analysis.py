@@ -1,22 +1,19 @@
 from typing import Dict, List, Any
 from pydantic import BaseModel, Field
 
-from tidy.manifest.node.base import (
+from tidy.manifest.nodes.base import (
     Checksum,
+    NodeConfig,
     ColumnInfo,
     DocsConfig,
+    RefArgs,
     DependsOn,
-    DeferRelation,
+    InjectedCte,
+    ContractConfig,
 )
 
 
-class SeedConfig(BaseModel):
-    materialized: str = "seed"
-    delimiter: str = ","
-    quote_columns: bool | None = None
-    
-
-class Seed(BaseModel):
+class Analysis(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
@@ -29,7 +26,7 @@ class Seed(BaseModel):
     fqn: List[str] | None = None
     alias: str | None = None
     checksum: Checksum | None = None
-    config: SeedConfig | None = None
+    config: NodeConfig | None = None
     tags: List[Any] = []
     description: str = ""
     columns: Dict[str, ColumnInfo] | None = None
@@ -44,7 +41,14 @@ class Seed(BaseModel):
     unrendered_config_call_dict: Dict[str, Any] = {}
     relation_name: str | None = None
     raw_code: str = ""
-    root_path: str | None = None
+    language: str = "sql"
+    ref: List[RefArgs] = []
+    sources: List[List[str]] = []
+    metrics: List[List[str]] = []
     depends_on: DependsOn = DependsOn()
-    defer_relation: DeferRelation | None = None
-    
+    compiled_path: str | None = None
+    compiled: bool = False
+    compiled_code: str | None = None
+    extra_ctes_injected: bool = False
+    extra_ctes: List[InjectedCte] = []
+    contract: ContractConfig = {}

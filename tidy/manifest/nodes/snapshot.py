@@ -1,19 +1,38 @@
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Union
 from pydantic import BaseModel, Field
 
-from tidy.manifest.node.base import (
+from tidy.manifest.nodes.base import (
     Checksum,
-    NodeConfig,
     ColumnInfo,
     DocsConfig,
     RefArgs,
     DependsOn,
     InjectedCte,
     ContractConfig,
+    DeferRelation,
 )
 
 
-class Analysis(BaseModel):
+class SnapshotMetaColumnNames(BaseModel):
+    dbt_valid_to: str | None = None
+    dbt_valid_from: str | None = None
+    dbt_scd_id: str | None = None
+    dbt_updated_at: str | None = None
+    dbt_is_deleted: str | None = None
+
+
+class SnapshotConfig(BaseModel):
+    materialized: str = "snapshot"
+    strategy: str | None = None
+    target_schema: str | None = None
+    target_database: str | None = None
+    updated_at: str | None = None
+    check_cols: Union[str, List[str], None] = None
+    snapshot_meta_column_names: SnapshotMetaColumnNames | None = None
+    dbt_valid_to_current: str | None = None
+
+    
+class Snapshot(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
@@ -26,7 +45,7 @@ class Analysis(BaseModel):
     fqn: List[str] | None = None
     alias: str | None = None
     checksum: Checksum | None = None
-    config: NodeConfig | None = None
+    config: SnapshotConfig | None = None
     tags: List[Any] = []
     description: str = ""
     columns: Dict[str, ColumnInfo] | None = None
@@ -52,3 +71,4 @@ class Analysis(BaseModel):
     extra_ctes_injected: bool = False
     extra_ctes: List[InjectedCte] = []
     contract: ContractConfig = {}
+    defer_relation: DeferRelation | None = None

@@ -1,7 +1,7 @@
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Union, Literal
 from pydantic import BaseModel, Field
 
-from tidy.manifest.node.base import (
+from tidy.manifest.nodes.base import (
     Checksum,
     NodeConfig,
     ColumnInfo,
@@ -10,13 +10,37 @@ from tidy.manifest.node.base import (
     DependsOn,
     InjectedCte,
     ContractConfig,
+    DeferRelation,
+    TimeSpine,
 )
 
 
-class HookNode(BaseModel):
+class ModelLevelConstraint(BaseModel):
+    type: Literal["check", "not_null", "unique", "primary_key", "foreign_key", "custom"]
+    name: str | None = None
+    expression: str | None = None
+    warn_unenforced: bool = True
+    warn_unsupported: bool = True
+    to: str | None = None
+    to_columns: List[str] = []
+    columns: List[str] = []
+
+
+class ModelBuildAfter(BaseModel):
+    count: int = 0
+    period: Literal["minute", "hour", "day"] = "hour"
+    depends_on: Literal["all", "any"] = "any"
+
+
+class ModelFreshness(BaseModel):
+    build_after: ModelBuildAfter | None = None
+
+
+class Model(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
+    #TODO: Update resource type enum
     resource_type: str | None = None
     package_name: str | None = None
     path: str | None = None
@@ -51,5 +75,12 @@ class HookNode(BaseModel):
     extra_ctes_injected: bool = False
     extra_ctes: List[InjectedCte] = []
     contract: ContractConfig = {}
-    index: int | None = None
-    
+    access: Literal["private", "protected", "public"] = "public"
+    constraints: List[ModelLevelConstraint] = []
+    version: Union[str, int, None] = None
+    latest_version: Union[str, int, None] = None
+    deprecation_date: str | None = None
+    defer_relation: DeferRelation | None = None
+    primary_key: List[str] = []
+    time_spine: TimeSpine | None = None
+    freshness: ModelFreshness | None = None

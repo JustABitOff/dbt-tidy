@@ -1,7 +1,7 @@
 from typing import Dict, List, Any
 from pydantic import BaseModel, Field, ConfigDict
 
-from tidy.manifest.node.base import (
+from tidy.manifest.nodes.base import (
     Checksum,
     ColumnInfo,
     DocsConfig,

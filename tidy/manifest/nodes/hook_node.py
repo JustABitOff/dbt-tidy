@@ -1,7 +1,7 @@
 from typing import Dict, List, Any
 from pydantic import BaseModel, Field
 
-from tidy.manifest.node.base import (
+from tidy.manifest.nodes.base import (
     Checksum,
     NodeConfig,
     ColumnInfo,
@@ -13,7 +13,7 @@ from tidy.manifest.node.base import (
 )
 
 
-class SqlOperation(BaseModel):
+class HookNode(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
@@ -50,4 +50,6 @@ class SqlOperation(BaseModel):
     compiled_code: str | None = None
     extra_ctes_injected: bool = False
     extra_ctes: List[InjectedCte] = []
-    contract: ContractConfig = {}  
+    contract: ContractConfig = {}
+    index: int | None = None
+    

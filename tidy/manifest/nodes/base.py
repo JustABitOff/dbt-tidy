@@ -54,7 +54,7 @@ class ColumnInfo(BaseModel):
         "month",
         "quarter",
         "year",
-    ]
+    ] | None = None
 
     model_config = ConfigDict(
         extra='allow',

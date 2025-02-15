@@ -1,5 +1,5 @@
-from typing import Dict, List, Any
-from pydantic import BaseModel, Field, ConfigDict
+from typing import Dict, List, Any, Literal
+from pydantic import BaseModel, Field
 
 from tidy.manifest.nodes.base import (
     Checksum,
@@ -42,7 +42,7 @@ class GenericTest(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
-    resource_type: str | None = None
+    resource_type: Literal["test"] = "test"
     package_name: str | None = None
     path: str | None = None
     original_file_path: str | None = None

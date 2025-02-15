@@ -41,7 +41,7 @@ class Model(BaseModel):
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
     #TODO: Update resource type enum
-    resource_type: str | None = None
+    resource_type: Literal["model"] = "model"
     package_name: str | None = None
     path: str | None = None
     original_file_path: str | None = None

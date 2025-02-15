@@ -1,4 +1,4 @@
-from typing import Dict, List, Any, Union
+from typing import Dict, List, Any, Union, Literal
 from pydantic import BaseModel, Field
 
 from tidy.manifest.nodes.base import (
@@ -10,6 +10,7 @@ from tidy.manifest.nodes.base import (
     InjectedCte,
     ContractConfig,
     DeferRelation,
+    BaseConfig,
 )
 
 
@@ -21,7 +22,7 @@ class SnapshotMetaColumnNames(BaseModel):
     dbt_is_deleted: str | None = None
 
 
-class SnapshotConfig(BaseModel):
+class SnapshotConfig(BaseConfig):
     materialized: str = "snapshot"
     strategy: str | None = None
     target_schema: str | None = None
@@ -37,7 +38,7 @@ class Snapshot(BaseModel):
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
     #TODO: Update resource type enum
-    resource_type: str | None = None
+    resource_type: Literal["snapshot"] = "snapshot"
     package_name: str | None = None
     path: str | None = None
     original_file_path: str | None = None

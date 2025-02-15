@@ -1,4 +1,4 @@
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Literal
 from pydantic import BaseModel, Field
 
 from tidy.manifest.nodes.base import (
@@ -7,10 +7,11 @@ from tidy.manifest.nodes.base import (
     DocsConfig,
     DependsOn,
     DeferRelation,
+    BaseConfig,
 )
 
 
-class SeedConfig(BaseModel):
+class SeedConfig(BaseConfig):
     materialized: str = "seed"
     delimiter: str = ","
     quote_columns: bool | None = None
@@ -21,7 +22,7 @@ class Seed(BaseModel):
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
     #TODO: Update resource type enum
-    resource_type: str | None = None
+    resource_type: Literal["seed"] = "seed"
     package_name: str | None = None
     path: str | None = None
     original_file_path: str | None = None

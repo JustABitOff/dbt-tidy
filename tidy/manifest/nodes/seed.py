@@ -15,13 +15,13 @@ class SeedConfig(BaseConfig):
     materialized: str = "seed"
     delimiter: str = ","
     quote_columns: bool | None = None
-    
+
 
 class Seed(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
-    #TODO: Update resource type enum
+    # TODO: Update resource type enum
     resource_type: Literal["seed"] = "seed"
     package_name: str | None = None
     path: str | None = None
@@ -48,4 +48,3 @@ class Seed(BaseModel):
     root_path: str | None = None
     depends_on: DependsOn = DependsOn()
     defer_relation: DeferRelation | None = None
-    

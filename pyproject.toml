@@ -32,6 +32,7 @@ Homepage = "https://github.com/JustABitOff/tidy"
 
 [tool.setuptools.packages.find]
 where = ["tidy"]
-[tool.poetry.group.test.dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"
+ruff = "^0.9.6"
 

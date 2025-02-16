@@ -50,4 +50,4 @@ class SqlOperation(BaseModel):
     compiled_code: str | None = None
     extra_ctes_injected: bool = False
     extra_ctes: List[InjectedCte] = []
-    contract: ContractConfig = {}  
+    contract: ContractConfig = {}

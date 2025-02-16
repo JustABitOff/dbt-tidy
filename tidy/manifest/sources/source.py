@@ -27,7 +27,7 @@ class ExternalPartition(BaseModel):
     meta: Dict[str, Any] = {}
 
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
 
 
@@ -39,7 +39,7 @@ class ExternalTable(BaseModel):
     partitions: Union[List[str], List[ExternalPartition], None] = None
 
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
 
 
@@ -61,22 +61,25 @@ class ColumnInfo(BaseModel):
     constraints: List[ColumnLevelConstraint] = []
     quote: bool | None = None
     tags: List[str] = []
-    granularity: Literal[
-        "nanosecond",
-        "microsecond",
-        "millisecond",
-        "second",
-        "minute",
-        "hour",
-        "day",
-        "week",
-        "month",
-        "quarter",
-        "year",
-    ] | None = None
+    granularity: (
+        Literal[
+            "nanosecond",
+            "microsecond",
+            "millisecond",
+            "second",
+            "minute",
+            "hour",
+            "day",
+            "week",
+            "month",
+            "quarter",
+            "year",
+        ]
+        | None
+    ) = None
 
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
 
 
@@ -85,7 +88,7 @@ class SourceConfig(BaseModel):
     event_time: Dict[str, Any] | None = None
 
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
 
 
@@ -93,7 +96,7 @@ class Source(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
-    #TODO: Update resource type enum
+    # TODO: Update resource type enum
     resource_type: str | None = None
     package_name: str | None = None
     path: str | None = None

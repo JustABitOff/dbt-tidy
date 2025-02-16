@@ -15,6 +15,7 @@ from tidy.manifest.nodes import (
 )
 from tidy.manifest.sources import Source
 from tidy.manifest.macros import Macro
+from tidy.manifest.docs import Documentation
 
 
 class Manifest(BaseModel):
@@ -33,6 +34,7 @@ class Manifest(BaseModel):
     ] | None = None
     sources: Dict[str, Source] | None = None
     macros: Dict[str, Macro] | None = None
+    docs: Dict[str, Documentation] | None = None
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

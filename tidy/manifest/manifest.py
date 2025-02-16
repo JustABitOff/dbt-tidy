@@ -18,6 +18,7 @@ from tidy.manifest.macros import Macro
 from tidy.manifest.docs import Documentation
 from tidy.manifest.exposures import Exposure
 from tidy.manifest.metrics import Metric
+from tidy.manifest.groups import Group
 
 
 class Manifest(BaseModel):
@@ -39,6 +40,7 @@ class Manifest(BaseModel):
     docs: Dict[str, Documentation] = {}
     exposures: Dict[str, Exposure] = {}
     metrics: Dict[str, Metric] = {}
+    groups: Dict[str, Group] = {}
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

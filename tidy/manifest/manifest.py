@@ -43,6 +43,25 @@ class Manifest(BaseModel):
     metrics: Dict[str, Metric] = {}
     groups: Dict[str, Group] = {}
     selectors: Dict[str, Selector] = {}
+    disabled: Dict[
+        str,
+        Union[
+            Analysis,
+            GenericTest,
+            HookNode,
+            Model,
+            Seed,
+            SingularTest,
+            Snapshot,
+            SqlOperation,
+            Source,
+            Exposure,
+            Metric,
+            # SavedQuery,
+            # SemanticModel,
+            # UnitTest,
+        ],
+    ] | None = None
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

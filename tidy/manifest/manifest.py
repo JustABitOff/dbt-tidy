@@ -20,6 +20,8 @@ from tidy.manifest.exposures import Exposure
 from tidy.manifest.metrics import Metric
 from tidy.manifest.groups import Group
 from tidy.manifest.selectors import Selector
+from tidy.manifest.parent_map import ParentMap
+from tidy.manifest.child_map import ChildMap
 
 
 class Manifest(BaseModel):
@@ -43,25 +45,32 @@ class Manifest(BaseModel):
     metrics: Dict[str, Metric] = {}
     groups: Dict[str, Group] = {}
     selectors: Dict[str, Selector] = {}
-    disabled: Dict[
-        str,
-        Union[
-            Analysis,
-            GenericTest,
-            HookNode,
-            Model,
-            Seed,
-            SingularTest,
-            Snapshot,
-            SqlOperation,
-            Source,
-            Exposure,
-            Metric,
-            # SavedQuery,
-            # SemanticModel,
-            # UnitTest,
-        ],
-    ] | None = None
+    disabled: (
+        Dict[
+            str,
+            list[
+                Union[
+                    Analysis,
+                    GenericTest,
+                    HookNode,
+                    Model,
+                    Seed,
+                    SingularTest,
+                    Snapshot,
+                    SqlOperation,
+                    Source,
+                    Exposure,
+                    Metric,
+                    # SavedQuery,
+                    # SemanticModel,
+                    # UnitTest,
+                ]
+            ],
+        ]
+        | None
+    ) = None
+    parent_map: ParentMap
+    child_map: ChildMap
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

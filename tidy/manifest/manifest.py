@@ -23,6 +23,7 @@ from tidy.manifest.selectors import Selector
 from tidy.manifest.parent_map import ParentMap
 from tidy.manifest.child_map import ChildMap
 from tidy.manifest.group_map import GroupMap
+from tidy.manifest.saved_queries import SavedQuery
 
 
 class Manifest(BaseModel):
@@ -73,6 +74,7 @@ class Manifest(BaseModel):
     parent_map: ParentMap | None = None
     child_map: ChildMap | None = None
     group_map: GroupMap | None = None
+    saved_queries: dict[str, SavedQuery] = {}
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

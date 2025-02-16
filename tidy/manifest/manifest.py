@@ -22,6 +22,7 @@ from tidy.manifest.groups import Group
 from tidy.manifest.selectors import Selector
 from tidy.manifest.parent_map import ParentMap
 from tidy.manifest.child_map import ChildMap
+from tidy.manifest.group_map import GroupMap
 
 
 class Manifest(BaseModel):
@@ -69,8 +70,9 @@ class Manifest(BaseModel):
         ]
         | None
     ) = None
-    parent_map: ParentMap
-    child_map: ChildMap
+    parent_map: ParentMap | None = None
+    child_map: ChildMap | None = None
+    group_map: GroupMap | None = None
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

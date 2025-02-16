@@ -1,5 +1,5 @@
-from typing import Dict, List, Any, Literal, Union
-from pydantic import BaseModel, Field, ConfigDict
+from typing import Dict, List, Any, Literal
+from pydantic import BaseModel
 
 
 class MacroDependsOn(BaseModel):

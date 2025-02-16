@@ -52,4 +52,3 @@ class HookNode(BaseModel):
     extra_ctes: List[InjectedCte] = []
     contract: ContractConfig = {}
     index: int | None = None
-    

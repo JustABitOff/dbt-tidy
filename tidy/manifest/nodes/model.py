@@ -40,7 +40,7 @@ class Model(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
-    #TODO: Update resource type enum
+    # TODO: Update resource type enum
     resource_type: Literal["model"] = "model"
     package_name: str | None = None
     path: str | None = None

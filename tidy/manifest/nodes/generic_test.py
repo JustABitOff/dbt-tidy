@@ -18,7 +18,7 @@ class TestMetadata(BaseModel):
     kwargs: Dict[str, Any] = {}
     namespace: str | None = None
 
-    
+
 class TestConfig(BaseConfig):
     enabled: bool = True
     alias: str | None = None

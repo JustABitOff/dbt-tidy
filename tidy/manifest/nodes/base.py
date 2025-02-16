@@ -42,22 +42,25 @@ class ColumnInfo(BaseModel):
     constraints: List[ColumnLevelConstraint] = []
     quote: bool | None = None
     tags: List[str] = []
-    granularity: Literal[
-        "nanosecond",
-        "microsecond",
-        "millisecond",
-        "second",
-        "minute",
-        "hour",
-        "day",
-        "week",
-        "month",
-        "quarter",
-        "year",
-    ] | None = None
+    granularity: (
+        Literal[
+            "nanosecond",
+            "microsecond",
+            "millisecond",
+            "second",
+            "minute",
+            "hour",
+            "day",
+            "week",
+            "month",
+            "quarter",
+            "year",
+        ]
+        | None
+    ) = None
 
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
 
 
@@ -65,7 +68,7 @@ class RefArgs(BaseModel):
     name: str = ""
     package: str | None = None
     version: Union[str, int, None] = None
-    
+
 
 class DependsOn(BaseModel):
     macros: List[str] = []
@@ -85,7 +88,7 @@ class CustomGranularity(BaseModel):
 class TimeSpine(BaseModel):
     standard_granularity_column: str
     custom_granularities: List[CustomGranularity] = []
-    
+
 
 class BaseConfig(BaseModel):
     enabled: bool = True
@@ -117,7 +120,7 @@ class BaseConfig(BaseModel):
     concurrent_batches: bool = True
 
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
 
 

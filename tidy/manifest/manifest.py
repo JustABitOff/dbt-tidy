@@ -16,28 +16,27 @@ from tidy.manifest.nodes import (
 from tidy.manifest.sources import Source
 from tidy.manifest.macros import Macro
 from tidy.manifest.docs import Documentation
+from tidy.manifest.exposures import Exposure
 
 
 class Manifest(BaseModel):
-    nodes: (
-        Dict[
-            str,
-            Union[
-                Analysis,
-                GenericTest,
-                HookNode,
-                Model,
-                Seed,
-                SingularTest,
-                Snapshot,
-                SqlOperation,
-            ],
-        ]
-        | None
-    ) = None
-    sources: Dict[str, Source] | None = None
-    macros: Dict[str, Macro] | None = None
-    docs: Dict[str, Documentation] | None = None
+    nodes: Dict[
+        str,
+        Union[
+            Analysis,
+            GenericTest,
+            HookNode,
+            Model,
+            Seed,
+            SingularTest,
+            Snapshot,
+            SqlOperation,
+        ],
+    ] = {}
+    sources: Dict[str, Source] = {}
+    macros: Dict[str, Macro] = {}
+    docs: Dict[str, Documentation] = {}
+    exposures: Dict[str, Exposure] = {}
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

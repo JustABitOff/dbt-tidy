@@ -19,6 +19,7 @@ from tidy.manifest.docs import Documentation
 from tidy.manifest.exposures import Exposure
 from tidy.manifest.metrics import Metric
 from tidy.manifest.groups import Group
+from tidy.manifest.selectors import Selector
 
 
 class Manifest(BaseModel):
@@ -41,6 +42,7 @@ class Manifest(BaseModel):
     exposures: Dict[str, Exposure] = {}
     metrics: Dict[str, Metric] = {}
     groups: Dict[str, Group] = {}
+    selectors: Dict[str, Selector] = {}
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

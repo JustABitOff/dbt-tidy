@@ -67,7 +67,7 @@ class SavedQuery(BaseModel):
     path: str
     original_file_path: str
     unique_id: str
-    fqn: str
+    fqn: list[str]
     query_params: QueryParams
     exports: list[Export] = []
     description: str | None = None

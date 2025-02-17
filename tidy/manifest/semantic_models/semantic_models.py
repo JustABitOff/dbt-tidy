@@ -151,7 +151,7 @@ class SemanticModel(BaseModel):
     path: str
     original_file_path: str
     unique_id: str
-    fqn: str
+    fqn: list[str]
     model: str
     node_relation: NodeRelation | None = None
     description: str | None = None

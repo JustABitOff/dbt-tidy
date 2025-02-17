@@ -25,7 +25,7 @@ from tidy.manifest.child_map import ChildMap
 from tidy.manifest.group_map import GroupMap
 from tidy.manifest.saved_queries import SavedQuery
 from tidy.manifest.semantic_models import SemanticModel
-
+from tidy.manifest.unit_tests import UnitTest
 
 class Manifest(BaseModel):
     nodes: Dict[
@@ -66,7 +66,7 @@ class Manifest(BaseModel):
                     Metric,
                     SavedQuery,
                     SemanticModel,
-                    # UnitTest,
+                    UnitTest,
                 ]
             ],
         ]
@@ -77,6 +77,7 @@ class Manifest(BaseModel):
     group_map: GroupMap | None = None
     saved_queries: dict[str, SavedQuery] = {}
     semantic_models: dict[str, SemanticModel] = {}
+    unit_tests: dict[str, UnitTest] = {}
 
     @classmethod
     def validate(cls, manifest_path: str = "target/manifest.json") -> "Manifest":

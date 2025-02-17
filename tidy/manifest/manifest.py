@@ -24,6 +24,7 @@ from tidy.manifest.parent_map import ParentMap
 from tidy.manifest.child_map import ChildMap
 from tidy.manifest.group_map import GroupMap
 from tidy.manifest.saved_queries import SavedQuery
+from tidy.manifest.semantic_models import SemanticModel
 
 
 class Manifest(BaseModel):
@@ -63,8 +64,8 @@ class Manifest(BaseModel):
                     Source,
                     Exposure,
                     Metric,
-                    # SavedQuery,
-                    # SemanticModel,
+                    SavedQuery,
+                    SemanticModel,
                     # UnitTest,
                 ]
             ],
@@ -75,6 +76,7 @@ class Manifest(BaseModel):
     child_map: ChildMap | None = None
     group_map: GroupMap | None = None
     saved_queries: dict[str, SavedQuery] = {}
+    semantic_models: dict[str, SemanticModel] = {}
 
     @classmethod
     def load_from_json(cls, file_path: str) -> "Manifest":

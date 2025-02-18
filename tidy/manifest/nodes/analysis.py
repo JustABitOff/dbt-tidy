@@ -1,7 +1,7 @@
 from typing import Dict, List, Any, Literal
 from pydantic import BaseModel, Field
 
-from tidy.manifest.nodes.base import (
+from tidy.manifest.bases import (
     Checksum,
     NodeConfig,
     ColumnInfo,
@@ -17,7 +17,6 @@ class Analysis(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
-    # TODO: Update resource type enum
     resource_type: Literal["analysis"] = "analysis"
     package_name: str | None = None
     path: str | None = None

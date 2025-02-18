@@ -1,7 +1,7 @@
 from typing import Dict, List, Any, Union, Literal
 from pydantic import BaseModel, Field
 
-from tidy.manifest.nodes.base import (
+from tidy.manifest.bases import (
     Checksum,
     NodeConfig,
     ColumnInfo,

@@ -1,15 +1,12 @@
-from typing import Literal, Union, Any
+from typing import Literal, Any
 
 from pydantic import BaseModel, ConfigDict
 
-
-class Owner(BaseModel):
-    email: str | None = None
-    name: str | None = None
-
-    model_config = ConfigDict(
-        extra="allow",
-    )
+from tidy.manifest.bases import (
+    RefArgs,
+    DependsOn,
+    Owner,
+)
 
 
 class ExposureConfig(BaseModel):
@@ -18,17 +15,6 @@ class ExposureConfig(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-
-
-class DependsOn(BaseModel):
-    macros: list[str] = []
-    nodes: list[str] = []
-
-
-class RefArgs(BaseModel):
-    name: str = ""
-    package: str | None = None
-    version: Union[str, int, None] = None
 
 
 class Exposure(BaseModel):

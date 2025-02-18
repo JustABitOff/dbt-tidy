@@ -1,5 +1,43 @@
 from typing import Dict, List, Any, Annotated, Union, Literal
+
 from pydantic import BaseModel, Field, ConfigDict
+
+
+class DependsOn(BaseModel):
+    macros: list[str] = []
+    nodes: list[str] = []
+
+
+class RefArgs(BaseModel):
+    name: str = ""
+    package: str | None = None
+    version: Union[str, int, None] = None
+
+
+class Owner(BaseModel):
+    email: str | None = None
+    name: str | None = None
+
+    model_config = ConfigDict(
+        extra="allow",
+    )
+
+
+class DocsConfig(BaseModel):
+    show: bool = True
+    node_color: str | None = None
+
+
+class FileSlice(BaseModel):
+    filename: str
+    content: str
+    start_line_number: int
+    end_line_number: int
+
+
+class SourceFileMetadata(BaseModel):
+    repo_file_path: str
+    file_slice: FileSlice
 
 
 class Checksum(BaseModel):
@@ -11,11 +49,6 @@ class Hook(BaseModel):
     sql: str
     transaction: bool = True
     index: int | None = None
-
-
-class DocsConfig(BaseModel):
-    show: bool = True
-    node_color: str | None = None
 
 
 class ContractConfig(BaseModel):
@@ -62,17 +95,6 @@ class ColumnInfo(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-
-
-class RefArgs(BaseModel):
-    name: str = ""
-    package: str | None = None
-    version: Union[str, int, None] = None
-
-
-class DependsOn(BaseModel):
-    macros: List[str] = []
-    nodes: List[str] = []
 
 
 class InjectedCte(BaseModel):

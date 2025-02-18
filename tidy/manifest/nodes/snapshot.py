@@ -1,7 +1,7 @@
 from typing import Dict, List, Any, Union, Literal
 from pydantic import BaseModel, Field
 
-from tidy.manifest.nodes.base import (
+from tidy.manifest.bases import (
     Checksum,
     ColumnInfo,
     DocsConfig,
@@ -37,7 +37,6 @@ class Snapshot(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
-    # TODO: Update resource type enum
     resource_type: Literal["snapshot"] = "snapshot"
     package_name: str | None = None
     path: str | None = None

@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Any
 from pydantic import BaseModel
 
 
@@ -7,7 +7,7 @@ class Metadata(BaseModel):
     dbt_version: str | None = None
     generated_at: str | None = None
     invocation_id: str | None = None
-    env: Dict[str] = {}
+    env: Dict[str, Any] = {}
     project_name: str | None = None
     project_id: str | None = None
     user_id: str | None = None

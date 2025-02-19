@@ -2,6 +2,10 @@ from typing import Dict, List, Any, Annotated, Union, Literal
 
 from pydantic import BaseModel, Field, ConfigDict
 
+from tidy.manifest.bases.hook import Hook
+from tidy.manifest.bases.docs_config import DocsConfig
+from tidy.manifest.bases.contract_config import ContractConfig
+
 
 class BaseConfig(BaseModel):
     enabled: bool = True

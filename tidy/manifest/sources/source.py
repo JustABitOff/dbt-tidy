@@ -2,7 +2,7 @@ from typing import Dict, List, Any, Literal, Union
 
 from pydantic import BaseModel, Field, ConfigDict
 
-from tidy.manifest.bases import ColumnInfo
+from tidy.manifest.bases.column_info import ColumnInfo
 
 
 class Quoting(BaseModel):

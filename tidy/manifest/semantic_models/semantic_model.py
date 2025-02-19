@@ -2,11 +2,9 @@ from typing import Literal, Any
 
 from pydantic import BaseModel, ConfigDict
 
-from tidy.manifest.bases import (
-    DependsOn,
-    RefArgs,
-    SourceFileMetadata,
-)
+from tidy.manifest.bases.ref_args import RefArgs
+from tidy.manifest.bases.depends_on import DependsOn
+from tidy.manifest.bases.source_file_metadata import SourceFileMetadata
 
 
 class NodeRelation(BaseModel):

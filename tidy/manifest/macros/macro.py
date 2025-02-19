@@ -2,7 +2,7 @@ from typing import Dict, List, Any, Literal
 
 from pydantic import BaseModel
 
-from tidy.manifest.bases import DocsConfig
+from tidy.manifest.bases.docs_config import DocsConfig
 
 
 class MacroDependsOn(BaseModel):

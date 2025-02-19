@@ -2,7 +2,7 @@ from typing import Any, Union, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from tidy.manifest.bases import DependsOn
+from tidy.manifest.bases.depends_on import DependsOn
 
 
 class UnitTestInputFixture(BaseModel):

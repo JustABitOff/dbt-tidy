@@ -1,8 +1,8 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
-from tidy.manifest.bases import Owner
+from tidy.manifest.bases.owner import Owner
 
 
 class Group(BaseModel):

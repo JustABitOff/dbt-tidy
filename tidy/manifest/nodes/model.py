@@ -1,18 +1,16 @@
 from typing import Dict, List, Any, Union, Literal
 from pydantic import BaseModel, Field
 
-from tidy.manifest.bases import (
-    Checksum,
-    NodeConfig,
-    ColumnInfo,
-    DocsConfig,
-    RefArgs,
-    DependsOn,
-    InjectedCte,
-    ContractConfig,
-    DeferRelation,
-    TimeSpine,
-)
+from tidy.manifest.bases.check_sum import Checksum
+from tidy.manifest.bases.node_config import NodeConfig
+from tidy.manifest.bases.column_info import ColumnInfo
+from tidy.manifest.bases.docs_config import DocsConfig
+from tidy.manifest.bases.injected_cte import InjectedCte
+from tidy.manifest.bases.ref_args import RefArgs
+from tidy.manifest.bases.depends_on import DependsOn
+from tidy.manifest.bases.contract_config import ContractConfig
+from tidy.manifest.bases.defer_relation import DeferRelation
+from tidy.manifest.bases.time_spine import TimeSpine
 
 
 class ModelLevelConstraint(BaseModel):

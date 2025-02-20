@@ -1,6 +1,7 @@
 from typing import Dict, List, Any, Literal
 from pydantic import BaseModel, Field
 
+from tidy.manifest.bases.base_config import BaseConfig
 from tidy.manifest.bases.check_sum import Checksum
 from tidy.manifest.bases.column_info import ColumnInfo
 from tidy.manifest.bases.docs_config import DocsConfig

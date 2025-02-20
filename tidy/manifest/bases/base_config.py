@@ -21,8 +21,8 @@ class BaseConfig(BaseModel):
     lookback: Annotated[int, Field(strict=True, gt=0)] = 1
     begin: Any | None = None
     persist_docs: Dict[str, Any] | None = None
-    post_hook: List[Hook] = Field([], alias="post-hook")
-    pre_hook: List[Hook] = Field([], alias="pre-hook")
+    post_hook: List[Hook] = Field(default_factory=list, alias="post-hook")
+    pre_hook: List[Hook] = Field(default_factory=list, alias="pre-hook")
     quoting: Dict[str, Any] = {}
     column_types: Dict[str, Any] = {}
     full_refresh: bool | None = None
@@ -38,4 +38,5 @@ class BaseConfig(BaseModel):
 
     model_config = ConfigDict(
         extra="allow",
+        populate_by_name=True,
     )

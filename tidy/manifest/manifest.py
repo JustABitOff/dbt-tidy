@@ -3,7 +3,7 @@ from typing import Dict, Union
 
 from pydantic import BaseModel
 
-from tidy.manifest import (
+from tidy.manifest.nodes import(
     Analysis,
     GenericTest,
     HookNode,
@@ -12,20 +12,20 @@ from tidy.manifest import (
     SingularTest,
     Snapshot,
     SqlOperation,
-    Source,
-    Macro,
-    Documentation,
-    Exposure,
-    Metric,
-    Group,
-    Selector,
-    ParentMap,
-    ChildMap,
-    GroupMap,
-    SavedQuery,
-    SemanticModel,
-    UnitTest,
 )
+from tidy.manifest.sources import Source
+from tidy.manifest.macros.macro import Macro
+from tidy.manifest.docs.documentation import Documentation
+from tidy.manifest.exposures.exposure import Exposure
+from tidy.manifest.metrics.metric import Metric
+from tidy.manifest.groups.group import Group
+from tidy.manifest.selectors.selector import Selector
+from tidy.manifest.parent_map.parent_map import ParentMap
+from tidy.manifest.child_map.child_map import ChildMap
+from tidy.manifest.group_map.group_map import GroupMap
+from tidy.manifest.saved_queries.saved_query import SavedQuery
+from tidy.manifest.semantic_models.semantic_model import SemanticModel
+from tidy.manifest.unit_tests.unit_test import UnitTest
 
 
 class Manifest(BaseModel):

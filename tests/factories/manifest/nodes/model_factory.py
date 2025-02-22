@@ -7,6 +7,7 @@ from tidy.manifest.nodes.model import (
     Model,
 )
 
+
 class ModelLevelConstraintFactory(Factory):
     class Meta:
         model = ModelLevelConstraint
@@ -24,4 +25,4 @@ class ModelFreshnessFactory(Factory):
 
 class ModelFactory(Factory):
     class Meta:
-        model = Model                
+        model = Model

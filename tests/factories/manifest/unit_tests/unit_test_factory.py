@@ -9,6 +9,7 @@ from tidy.manifest.unit_tests.unit_test import (
     UnitTest,
 )
 
+
 class UnitTestInputFixtureFactory(Factory):
     class Meta:
         model = UnitTestInputFixture
@@ -36,4 +37,4 @@ class UnitTestNodeVersionsFactory(Factory):
 
 class UnitTestFactory(Factory):
     class Meta:
-        model = UnitTest                
+        model = UnitTest

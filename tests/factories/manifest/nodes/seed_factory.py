@@ -2,6 +2,7 @@ from factory import Factory
 
 from tidy.manifest.nodes.seed import SeedConfig, Seed
 
+
 class SeedConfigFactory(Factory):
     class Meta:
         model = SeedConfig

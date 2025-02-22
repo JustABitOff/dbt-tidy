@@ -6,6 +6,7 @@ from tidy.manifest.nodes.snapshot import (
     Snapshot,
 )
 
+
 class SnapshotMetaColumnNamesFactory(Factory):
     class Meta:
         model = SnapshotMetaColumnNames
@@ -18,4 +19,4 @@ class SnapshotConfigFactory(Factory):
 
 class SnapshotFactory(Factory):
     class Meta:
-        model = Snapshot        
+        model = Snapshot

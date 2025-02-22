@@ -4,7 +4,8 @@ from tidy.manifest.nodes.generic_test import (
     TestMetadata,
     TestConfig,
     GenericTest,
-)    
+)
+
 
 class TestMetadataFactory(Factory):
     class Meta:
@@ -18,4 +19,4 @@ class TestConfigFactory(Factory):
 
 class GenericTestFactory(Factory):
     class Meta:
-        model = GenericTest                
+        model = GenericTest

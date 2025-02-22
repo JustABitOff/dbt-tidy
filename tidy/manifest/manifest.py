@@ -3,7 +3,7 @@ from typing import Dict, Union
 
 from pydantic import BaseModel
 
-from tidy.manifest.nodes import(
+from tidy.manifest.nodes import (
     Analysis,
     GenericTest,
     HookNode,
@@ -82,6 +82,4 @@ class Manifest(BaseModel):
 
     @classmethod
     def validate(cls, manifest_path: str = "target/manifest.json") -> "Manifest":
-        return cls.model_validate_json(
-            pathlib.Path(manifest_path).read_text()
-        )
+        return cls.model_validate_json(pathlib.Path(manifest_path).read_text())

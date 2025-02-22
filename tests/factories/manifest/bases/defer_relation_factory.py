@@ -16,8 +16,6 @@ class DeferRelationFactory(factory.Factory):
     name = factory.Faker("word")
     description = factory.Faker("sentence")
     compiled_code = factory.Faker("sentence")
-    meta = {
-        "test_key": "test_value"
-    }
+    meta = {"test_key": "test_value"}
     tags = factory.List([factory.Faker("word") for _ in range(3)])
-    config = factory.SubFactory(NodeConfigFactory) 
+    config = factory.SubFactory(NodeConfigFactory)

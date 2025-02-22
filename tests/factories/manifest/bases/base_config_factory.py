@@ -10,7 +10,6 @@ from tests.factories.manifest.bases.hook_factory import HookFactory
 from tidy.manifest.bases.base_config import BaseConfig
 
 
-
 class BaseConfigFactory(factory.Factory):
     class Meta:
         model = BaseConfig
@@ -19,11 +18,11 @@ class BaseConfigFactory(factory.Factory):
     schema_name = factory.Faker("word")
     database = factory.Faker("word")
     tags = factory.List([factory.Faker("word") for _ in range(3)])
-    meta = {
-        "test_key": "test_value"
-    }
+    meta = {"test_key": "test_value"}
     group = factory.Faker("word")
-    materialized = factory.LazyFunction(lambda: random.choice(["view", "incremental", "table"]))
+    materialized = factory.LazyFunction(
+        lambda: random.choice(["view", "incremental", "table"])
+    )
     incremental_strategy = factory.LazyAttribute(
         lambda obj: "merge" if obj.materialized == "incremental" else None
     )
@@ -40,14 +39,10 @@ class BaseConfigFactory(factory.Factory):
         "schema": True,
         "identifier": True,
     }
-    column_types = {
-        "test_column": "varchar(255)"
-    }
+    column_types = {"test_column": "varchar(255)"}
     full_refresh = factory.Faker("boolean")
     unique_key = ["id", "timestamp"]
-    grants = {
-        "select": "test_object"
-    }
+    grants = {"select": "test_object"}
     packages = factory.List([factory.Faker("word") for _ in range(2)])
     docs = factory.SubFactory(DocsConfigFactory)
     contract = factory.SubFactory(ContractConfigFactory)

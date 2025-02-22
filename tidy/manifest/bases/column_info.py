@@ -2,6 +2,7 @@ from typing import Literal, List, Dict, Any
 
 from pydantic import BaseModel, ConfigDict
 
+
 class ColumnLevelConstraint(BaseModel):
     type: Literal["check", "not_null", "unique", "primary_key", "foreign_key", "custom"]
     name: str | None = None

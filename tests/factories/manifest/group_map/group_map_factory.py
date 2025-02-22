@@ -9,8 +9,9 @@ class GroupMapFactory(factory.Factory):
 
     root = factory.LazyFunction(
         lambda: {
-            factory.Faker("word").evaluate(None, None, {'locale': 'en_US'}): [
-                factory.Faker("word").evaluate(None, None, {'locale': 'en_US'}) for _ in range(3)
+            factory.Faker("word").evaluate(None, None, {"locale": "en_US"}): [
+                factory.Faker("word").evaluate(None, None, {"locale": "en_US"})
+                for _ in range(3)
             ]
             for _ in range(2)
         }

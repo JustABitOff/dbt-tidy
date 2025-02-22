@@ -7,8 +7,9 @@ from tidy.manifest.sources.source import (
     ExternalPartition,
     ExternalTable,
     SourceConfig,
-    Source
+    Source,
 )
+
 
 class QuotingFactory(Factory):
     class Meta:
@@ -42,4 +43,4 @@ class SourceConfigFactory(Factory):
 
 class SourceFactory(Factory):
     class Meta:
-        model = Source                                                
+        model = Source

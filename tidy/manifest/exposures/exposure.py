@@ -6,6 +6,7 @@ from tidy.manifest.bases.ref_args import RefArgs
 from tidy.manifest.bases.depends_on import DependsOn
 from tidy.manifest.bases.owner import Owner
 
+
 class ExposureConfig(BaseModel):
     enabled: bool = True
 

@@ -13,7 +13,9 @@ class CustomGranularityFactory(factory.Factory):
 
 class TimeSpineFactory(factory.Factory):
     class Meta:
-        model = TimeSpine        
+        model = TimeSpine
 
     standard_granularity_column = factory.Faker("word")
-    custom_granularities = factory.List([factory.SubFactory(CustomGranularityFactory) for _ in range(2)])
+    custom_granularities = factory.List(
+        [factory.SubFactory(CustomGranularityFactory) for _ in range(2)]
+    )

@@ -36,4 +36,5 @@ pytest = "^8.3.4"
 ruff = "^0.9.6"
 factory-boy = "^3.3.3"
 coverage = "^7.6.12"
+datamodel-code-generator = {extras = ["http"], version = "^0.28.1"}
 

@@ -1,4 +1,4 @@
-from tidy.manifest.saved_queries.saved_queries import SavedQuery
+from tidy.manifest.saved_queries.saved_query import SavedQuery
 
 
 __all__ = ["SavedQuery"]

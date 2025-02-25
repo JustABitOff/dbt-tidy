@@ -1,14 +1,12 @@
 from typing import Dict, List, Any, Literal
+
 from pydantic import BaseModel
+
+from tidy.manifest.bases.docs_config import DocsConfig
 
 
 class MacroDependsOn(BaseModel):
     macros: List[str] = []
-
-
-class DocsConfig(BaseModel):
-    show: bool = True
-    node_color: str | None = None
 
 
 class MacroArgument(BaseModel):

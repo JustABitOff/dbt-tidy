@@ -1,4 +1,4 @@
-from tidy.manifest.unit_tests.unit_tests import UnitTest
+from tidy.manifest.unit_tests.unit_test import UnitTest
 
 
 __all__ = ["UnitTest"]

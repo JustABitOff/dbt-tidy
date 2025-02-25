@@ -2,6 +2,8 @@ from typing import Any, Union, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from tidy.manifest.bases.depends_on import DependsOn
+
 
 class UnitTestInputFixture(BaseModel):
     input: str
@@ -20,11 +22,6 @@ class UnitTestOverrides(BaseModel):
     macros: dict[str, Any] = {}
     vars: dict[str, Any] = {}
     env_vars: dict[str, Any] = {}
-
-
-class DependsOn(BaseModel):
-    macros: list[str] = []
-    nodes: list[str] = []
 
 
 class UnitTestConfig(BaseModel):

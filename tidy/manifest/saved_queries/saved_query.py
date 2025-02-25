@@ -1,6 +1,10 @@
-from typing import Literal, Any, Union
+from typing import Literal, Any
 
 from pydantic import BaseModel, Field, ConfigDict
+
+from tidy.manifest.bases.ref_args import RefArgs
+from tidy.manifest.bases.depends_on import DependsOn
+from tidy.manifest.bases.source_file_metadata import SourceFileMetadata
 
 
 class QueryParams(BaseModel):
@@ -20,18 +24,6 @@ class Export(BaseModel):
     unrendered_config: dict[str, Any] = {}
 
 
-class FileSlice(BaseModel):
-    filename: str
-    content: str
-    start_line_number: int
-    end_line_number: int
-
-
-class SourceFileMetadata(BaseModel):
-    repo_file_path: str
-    file_slice: FileSlice
-
-
 class SavedQueryCache(BaseModel):
     enabled: bool = False
 
@@ -47,17 +39,6 @@ class SavedQueryConfig(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-
-
-class DependsOn(BaseModel):
-    macros: list[str] = []
-    nodes: list[str] = []
-
-
-class RefArgs(BaseModel):
-    name: str = ""
-    package: str | None = None
-    version: Union[str, int, None] = None
 
 
 class SavedQuery(BaseModel):

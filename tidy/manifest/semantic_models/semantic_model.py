@@ -1,6 +1,10 @@
-from typing import Literal, Any, Union
+from typing import Literal, Any
 
 from pydantic import BaseModel, ConfigDict
+
+from tidy.manifest.bases.ref_args import RefArgs
+from tidy.manifest.bases.depends_on import DependsOn
+from tidy.manifest.bases.source_file_metadata import SourceFileMetadata
 
 
 class NodeRelation(BaseModel):
@@ -48,10 +52,6 @@ class NonAdditiveDimension(BaseModel):
         "count",
     ]
     window_groupings: list[str] = []
-
-
-class SemanticLayerElementConfig(BaseModel):
-    meta: dict[str, Any] = {}
 
 
 class Measure(BaseModel):
@@ -109,29 +109,6 @@ class Dimension(BaseModel):
     label: str | None = None
     is_partition: bool = False
     type_params: DimensionTypeParams | None = None
-
-
-class FileSlice(BaseModel):
-    filename: str
-    content: str
-    start_line_number: int
-    end_line_number: int
-
-
-class SourceFileMetadata(BaseModel):
-    repo_file_path: str
-    file_slice: FileSlice
-
-
-class DependsOn(BaseModel):
-    macros: list[str] = []
-    nodes: list[str] = []
-
-
-class RefArgs(BaseModel):
-    name: str = ""
-    package: str | None = None
-    version: Union[str, int, None] = None
 
 
 class SemanticModelConfig(BaseModel):

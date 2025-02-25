@@ -1,15 +1,8 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
-
-class Owner(BaseModel):
-    email: str
-    name: str
-
-    model_config = ConfigDict(
-        extra="allow",
-    )
+from tidy.manifest.bases.owner import Owner
 
 
 class Group(BaseModel):

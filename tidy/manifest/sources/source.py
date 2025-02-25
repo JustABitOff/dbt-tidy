@@ -1,5 +1,8 @@
 from typing import Dict, List, Any, Literal, Union
+
 from pydantic import BaseModel, Field, ConfigDict
+
+from tidy.manifest.bases.column_info import ColumnInfo
 
 
 class Quoting(BaseModel):
@@ -43,46 +46,6 @@ class ExternalTable(BaseModel):
     )
 
 
-class ColumnLevelConstraint(BaseModel):
-    type: Literal["check", "not_null", "unique", "primary_key", "foreign_key", "custom"]
-    name: str | None = None
-    expression: str | None = None
-    warn_unenforced: bool = True
-    warn_unsupported: bool = True
-    to: str | None = None
-    to_columns: List[str] = []
-
-
-class ColumnInfo(BaseModel):
-    name: str | None = None
-    description: str = ""
-    meta: Dict[str, Any] = {}
-    data_type: str | None = None
-    constraints: List[ColumnLevelConstraint] = []
-    quote: bool | None = None
-    tags: List[str] = []
-    granularity: (
-        Literal[
-            "nanosecond",
-            "microsecond",
-            "millisecond",
-            "second",
-            "minute",
-            "hour",
-            "day",
-            "week",
-            "month",
-            "quarter",
-            "year",
-        ]
-        | None
-    ) = None
-
-    model_config = ConfigDict(
-        extra="allow",
-    )
-
-
 class SourceConfig(BaseModel):
     enabled: bool = True
     event_time: Dict[str, Any] | None = None
@@ -96,8 +59,7 @@ class Source(BaseModel):
     database: str | None = None
     schema_name: str | None = Field(None, alias="schema")
     name: str | None = None
-    # TODO: Update resource type enum
-    resource_type: str | None = None
+    resource_type: Literal["source"] = "source"
     package_name: str | None = None
     path: str | None = None
     original_file_path: str | None = None

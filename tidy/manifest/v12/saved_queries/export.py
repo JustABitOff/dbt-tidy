@@ -7,7 +7,7 @@ from tidy.manifest.v12.bases.enums import ExportAs
 
 class ExportConfig(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     export_as: ExportAs
     schema_name: Optional[str] = None
@@ -17,8 +17,8 @@ class ExportConfig(BaseModel):
 
 class Export(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
-    config: ExportConfig = Field(..., title='ExportConfig')
+    config: ExportConfig = Field(..., title="ExportConfig")
     unrendered_config: Optional[Dict[str, str]] = None

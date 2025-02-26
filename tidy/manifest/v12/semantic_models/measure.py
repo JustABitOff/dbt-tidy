@@ -3,12 +3,14 @@ from typing import Optional, List
 from pydantic import BaseModel, ConfigDict
 
 from tidy.manifest.v12.bases.enums import Agg
-from tidy.manifest.v12.semantic_models.semantic_layer_element_config import SemanticLayerElementConfig
+from tidy.manifest.v12.semantic_models.semantic_layer_element_config import (
+    SemanticLayerElementConfig,
+)
 
 
 class MeasureAggregationParameters(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     percentile: Optional[float] = None
     use_discrete_percentile: Optional[bool] = False
@@ -17,7 +19,7 @@ class MeasureAggregationParameters(BaseModel):
 
 class NonAdditiveDimension(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     window_choice: Agg
@@ -26,7 +28,7 @@ class NonAdditiveDimension(BaseModel):
 
 class Measure(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     agg: Agg

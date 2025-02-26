@@ -10,32 +10,31 @@ from tidy.manifest.v12.bases.depends_on import DependsOn
 from tidy.manifest.v12.bases.injected_cte import InjectedCTE
 from tidy.manifest.v12.bases.contract import Contract
 from tidy.manifest.v12.bases.defer_relation import DeferRelation
-from tidy.manifest.v12.bases.enums import ResourceType
 from tidy.manifest.v12.nodes.snapshots.snapshot_config import SnapshotConfig
 
 
 class Snapshot(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     database: Optional[str] = None
-    schema_: str = Field(..., alias='schema')
+    schema_: str = Field(..., alias="schema")
     name: str
-    resource_type: Literal['snapshot']
+    resource_type: Literal["snapshot"]
     package_name: str
     path: str
     original_file_path: str
     unique_id: str
     fqn: List[str]
     alias: str
-    checksum: FileHash = Field(..., title='FileHash')
-    config: SnapshotConfig = Field(..., title='SnapshotConfig')
+    checksum: FileHash = Field(..., title="FileHash")
+    config: SnapshotConfig = Field(..., title="SnapshotConfig")
     tags: Optional[List[str]] = None
-    description: Optional[str] = ''
+    description: Optional[str] = ""
     columns: Optional[Dict[str, ColumnInfo]] = None
     meta: Optional[Dict[str, Any]] = None
     group: Optional[str] = None
-    docs: Optional[Docs] = Field(None, title='Docs')
+    docs: Optional[Docs] = Field(None, title="Docs")
     patch_path: Optional[str] = None
     build_path: Optional[str] = None
     unrendered_config: Optional[Dict[str, Any]] = None
@@ -43,18 +42,18 @@ class Snapshot(BaseModel):
     config_call_dict: Optional[Dict[str, Any]] = None
     unrendered_config_call_dict: Optional[Dict[str, Any]] = None
     relation_name: Optional[str] = None
-    raw_code: Optional[str] = ''
+    raw_code: Optional[str] = ""
     doc_blocks: Optional[List[str]] = None
-    language: Optional[str] = 'sql'
+    language: Optional[str] = "sql"
     refs: Optional[List[RefArgs]] = None
     sources: Optional[List[List[str]]] = None
     metrics: Optional[List[List[str]]] = None
-    depends_on: Optional[DependsOn] = Field(None, title='DependsOn')
+    depends_on: Optional[DependsOn] = Field(None, title="DependsOn")
     compiled_path: Optional[str] = None
     compiled: Optional[bool] = False
     compiled_code: Optional[str] = None
     extra_ctes_injected: Optional[bool] = False
     extra_ctes: Optional[List[InjectedCTE]] = None
-    field_pre_injected_sql: Optional[str] = Field(None, alias='_pre_injected_sql')
-    contract: Optional[Contract] = Field(None, title='Contract')
+    field_pre_injected_sql: Optional[str] = Field(None, alias="_pre_injected_sql")
+    contract: Optional[Contract] = Field(None, title="Contract")
     defer_relation: Optional[DeferRelation] = None

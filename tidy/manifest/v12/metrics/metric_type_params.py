@@ -6,10 +6,9 @@ from tidy.manifest.v12.bases.enums import MetricCalculation, PeriodAgg, Granular
 from tidy.manifest.v12.bases.where_filter_intersection import WhereFilterIntersection
 
 
-
 class MetricInputMeasure(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     filter: Optional[WhereFilterIntersection] = None
@@ -20,7 +19,7 @@ class MetricInputMeasure(BaseModel):
 
 class MetricTimeWindow(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     count: int
     granularity: str
@@ -28,7 +27,7 @@ class MetricTimeWindow(BaseModel):
 
 class MetricInput(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     filter: Optional[WhereFilterIntersection] = None
@@ -39,7 +38,7 @@ class MetricInput(BaseModel):
 
 class ConstantPropertyInput(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     base_property: str
     conversion_property: str
@@ -47,28 +46,28 @@ class ConstantPropertyInput(BaseModel):
 
 class ConversionTypeParams(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
-    base_measure: MetricInputMeasure = Field(..., title='MetricInputMeasure')
-    conversion_measure: MetricInputMeasure = Field(..., title='MetricInputMeasure')
+    base_measure: MetricInputMeasure = Field(..., title="MetricInputMeasure")
+    conversion_measure: MetricInputMeasure = Field(..., title="MetricInputMeasure")
     entity: str
-    calculation: Optional[MetricCalculation] = 'conversion_rate'
+    calculation: Optional[MetricCalculation] = "conversion_rate"
     window: Optional[MetricTimeWindow] = None
     constant_properties: Optional[List[ConstantPropertyInput]] = None
 
 
 class CumulativeTypeParams(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     window: Optional[MetricTimeWindow] = None
     grain_to_date: Optional[str] = None
-    period_agg: Optional[PeriodAgg] = 'first'
+    period_agg: Optional[PeriodAgg] = "first"
 
 
 class MetricTypeParams(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     measure: Optional[MetricInputMeasure] = None
     input_measures: Optional[List[MetricInputMeasure]] = None

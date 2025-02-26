@@ -25,10 +25,10 @@ from tidy.manifest.v12.unit_tests.unit_test_definition import UnitTestDefinition
 
 class WritableManifest(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     metadata: ManifestMetadata = Field(
-        ..., description='Metadata about the manifest', title='ManifestMetadata'
+        ..., description="Metadata about the manifest", title="ManifestMetadata"
     )
     nodes: Dict[
         str,
@@ -43,46 +43,46 @@ class WritableManifest(BaseModel):
             Snapshot,
         ],
     ] = Field(
-        ..., description='The nodes defined in the dbt project and its dependencies'
+        ..., description="The nodes defined in the dbt project and its dependencies"
     )
     sources: Dict[str, SourceDefinition] = Field(
-        ..., description='The sources defined in the dbt project and its dependencies'
+        ..., description="The sources defined in the dbt project and its dependencies"
     )
     macros: Dict[str, Macro] = Field(
-        ..., description='The macros defined in the dbt project and its dependencies'
+        ..., description="The macros defined in the dbt project and its dependencies"
     )
     docs: Dict[str, Documentation] = Field(
-        ..., description='The docs defined in the dbt project and its dependencies'
+        ..., description="The docs defined in the dbt project and its dependencies"
     )
     exposures: Dict[str, Exposure] = Field(
-        ..., description='The exposures defined in the dbt project and its dependencies'
+        ..., description="The exposures defined in the dbt project and its dependencies"
     )
     metrics: Dict[str, Metric] = Field(
-        ..., description='The metrics defined in the dbt project and its dependencies'
+        ..., description="The metrics defined in the dbt project and its dependencies"
     )
     groups: Dict[str, Group] = Field(
-        ..., description='The groups defined in the dbt project'
+        ..., description="The groups defined in the dbt project"
     )
     selectors: Dict[str, Any] = Field(
-        ..., description='The selectors defined in selectors.yml'
+        ..., description="The selectors defined in selectors.yml"
     )
     parent_map: Optional[Dict[str, List[str]]] = Field(
-        ..., description='A mapping from child nodes to their dependencies'
+        ..., description="A mapping from child nodes to their dependencies"
     )
     child_map: Optional[Dict[str, List[str]]] = Field(
-        ..., description='A mapping from parent nodes to their dependents'
+        ..., description="A mapping from parent nodes to their dependents"
     )
     group_map: Optional[Dict[str, List[str]]] = Field(
-        ..., description='A mapping from group names to their nodes'
+        ..., description="A mapping from group names to their nodes"
     )
     saved_queries: Dict[str, SavedQuery] = Field(
-        ..., description='The saved queries defined in the dbt project'
+        ..., description="The saved queries defined in the dbt project"
     )
     semantic_models: Dict[str, SemanticModel] = Field(
-        ..., description='The semantic models defined in the dbt project'
+        ..., description="The semantic models defined in the dbt project"
     )
     unit_tests: Dict[str, UnitTestDefinition] = Field(
-        ..., description='The unit tests defined in the project'
+        ..., description="The unit tests defined in the project"
     )
     disabled: Optional[
         Dict[
@@ -106,7 +106,7 @@ class WritableManifest(BaseModel):
                 ]
             ],
         ]
-    ] = Field(..., description='A mapping of the disabled nodes in the target')
+    ] = Field(..., description="A mapping of the disabled nodes in the target")
 
 
 def parse_manifest(manifest_path: str = "target/manifest.json") -> WritableManifest:

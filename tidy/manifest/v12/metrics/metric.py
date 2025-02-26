@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from tidy.manifest.v12.bases.source_file_metadata import SourceFileMetadata
 from tidy.manifest.v12.bases.depends_on import DependsOn
 from tidy.manifest.v12.bases.ref_args import RefArgs
-from tidy.manifest.v12.bases.enums import ResourceType, MetricType
+from tidy.manifest.v12.bases.enums import MetricType
 from tidy.manifest.v12.metrics.metric_type_params import MetricTypeParams
 from tidy.manifest.v12.bases.where_filter_intersection import WhereFilterIntersection
 from tidy.manifest.v12.metrics.metric_config import MetricConfig
@@ -13,10 +13,10 @@ from tidy.manifest.v12.metrics.metric_config import MetricConfig
 
 class Metric(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
-    resource_type: Literal['metric']
+    resource_type: Literal["metric"]
     package_name: str
     path: str
     original_file_path: str
@@ -25,16 +25,16 @@ class Metric(BaseModel):
     description: str
     label: str
     type: MetricType
-    type_params: MetricTypeParams = Field(..., title='MetricTypeParams')
+    type_params: MetricTypeParams = Field(..., title="MetricTypeParams")
     filter: Optional[WhereFilterIntersection] = None
     metadata: Optional[SourceFileMetadata] = None
     time_granularity: Optional[str] = None
     meta: Optional[Dict[str, Any]] = None
     tags: Optional[List[str]] = None
-    config: Optional[MetricConfig] = Field(None, title='MetricConfig')
+    config: Optional[MetricConfig] = Field(None, title="MetricConfig")
     unrendered_config: Optional[Dict[str, Any]] = None
     sources: Optional[List[List[str]]] = None
-    depends_on: Optional[DependsOn] = Field(None, title='DependsOn')
+    depends_on: Optional[DependsOn] = Field(None, title="DependsOn")
     refs: Optional[List[RefArgs]] = None
     metrics: Optional[List[List[str]]] = None
     created_at: Optional[float] = None

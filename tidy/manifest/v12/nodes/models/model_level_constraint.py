@@ -7,7 +7,7 @@ from tidy.manifest.v12.bases.enums import ConstraintType
 
 class ModelLevelConstraint(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     type: ConstraintType
     name: Optional[str] = None

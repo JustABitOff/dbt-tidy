@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 class SnapshotMetaColumnNames(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     dbt_valid_to: Optional[str] = None
     dbt_valid_from: Optional[str] = None

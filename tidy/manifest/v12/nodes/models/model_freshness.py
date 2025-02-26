@@ -7,7 +7,7 @@ from tidy.manifest.v12.bases.enums import Period, DependsOn
 
 class ModelBuildAfter(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
     depends_on: Optional[DependsOn] = DependsOn.any
     count: Optional[int] = 0
@@ -16,6 +16,6 @@ class ModelBuildAfter(BaseModel):
 
 class ModelFreshness(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
-    build_after: Optional[ModelBuildAfter] = Field(None, title='ModelBuildAfter')
+    build_after: Optional[ModelBuildAfter] = Field(None, title="ModelBuildAfter")

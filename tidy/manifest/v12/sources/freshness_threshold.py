@@ -7,7 +7,7 @@ from tidy.manifest.v12.bases.enums import Period
 
 class Time(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     count: Optional[int] = None
     period: Optional[Period] = None
@@ -15,7 +15,7 @@ class Time(BaseModel):
 
 class FreshnessThreshold(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     warn_after: Optional[Time] = None
     error_after: Optional[Time] = None

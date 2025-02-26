@@ -5,8 +5,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class SourceConfig(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
-    field_extra: Optional[Dict[str, Any]] = Field(None, alias='_extra')
+    field_extra: Optional[Dict[str, Any]] = Field(None, alias="_extra")
     enabled: Optional[bool] = True
     event_time: Optional[Any] = None

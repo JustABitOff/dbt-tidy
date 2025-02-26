@@ -5,9 +5,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class MetricConfig(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
-    field_extra: Optional[Dict[str, Any]] = Field(None, alias='_extra')
+    field_extra: Optional[Dict[str, Any]] = Field(None, alias="_extra")
     enabled: Optional[bool] = True
     group: Optional[str] = None
     meta: Optional[Dict[str, Any]] = None

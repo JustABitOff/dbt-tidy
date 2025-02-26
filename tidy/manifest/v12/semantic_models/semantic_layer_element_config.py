@@ -5,6 +5,6 @@ from pydantic import BaseModel, ConfigDict
 
 class SemanticLayerElementConfig(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     meta: Optional[Dict[str, Any]] = None

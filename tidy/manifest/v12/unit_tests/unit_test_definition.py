@@ -12,24 +12,24 @@ from tidy.manifest.v12.unit_tests.unit_test_node_versions import UnitTestNodeVer
 
 class UnitTestDefinition(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     model: str
     given: List[UnitTestInputFixture]
-    expect: UnitTestOutputFixture = Field(..., title='UnitTestOutputFixture')
+    expect: UnitTestOutputFixture = Field(..., title="UnitTestOutputFixture")
     name: str
-    resource_type: Literal['unit_test']
+    resource_type: Literal["unit_test"]
     package_name: str
     path: str
     original_file_path: str
     unique_id: str
     fqn: List[str]
-    description: Optional[str] = ''
+    description: Optional[str] = ""
     overrides: Optional[UnitTestOverrides] = None
-    depends_on: Optional[DependsOn] = Field(None, title='DependsOn')
-    config: Optional[UnitTestConfig] = Field(None, title='UnitTestConfig')
+    depends_on: Optional[DependsOn] = Field(None, title="DependsOn")
+    config: Optional[UnitTestConfig] = Field(None, title="UnitTestConfig")
     checksum: Optional[str] = None
-    schema_: Optional[str] = Field(None, alias='schema')
+    schema_: Optional[str] = Field(None, alias="schema")
     created_at: Optional[float] = None
     versions: Optional[UnitTestNodeVersions] = None
     version: Optional[Union[str, float]] = None

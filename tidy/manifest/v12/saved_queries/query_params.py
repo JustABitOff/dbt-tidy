@@ -7,7 +7,7 @@ from tidy.manifest.v12.bases.where_filter_intersection import WhereFilterInterse
 
 class QueryParams(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     metrics: List[str]
     group_by: List[str]

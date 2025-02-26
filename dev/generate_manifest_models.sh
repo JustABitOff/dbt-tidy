@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  echo "Usage: $0 <version>"
+  echo "Usage: $0 <version> - Please provide the version number (e.g., v12) as an argument."
   exit 1
 fi
 

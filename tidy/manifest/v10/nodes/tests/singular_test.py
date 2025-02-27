@@ -15,10 +15,10 @@ from tidy.manifest.v10.nodes.tests.test_config import TestConfig
 
 class SingularTestNode(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     database: Optional[str] = None
-    schema_: str = Field(..., alias='schema')
+    schema_: str = Field(..., alias="schema")
     name: str
     resource_type: ResourceType
     package_name: str
@@ -31,31 +31,31 @@ class SingularTestNode(BaseModel):
     config: Optional[TestConfig] = Field(
         default_factory=lambda: TestConfig.model_validate(
             {
-                'enabled': True,
-                'alias': None,
-                'schema': 'dbt_test__audit',
-                'database': None,
-                'tags': [],
-                'meta': {},
-                'group': None,
-                'materialized': 'test',
-                'severity': 'ERROR',
-                'store_failures': None,
-                'where': None,
-                'limit': None,
-                'fail_calc': 'count(*)',
-                'warn_if': '!= 0',
-                'error_if': '!= 0',
+                "enabled": True,
+                "alias": None,
+                "schema": "dbt_test__audit",
+                "database": None,
+                "tags": [],
+                "meta": {},
+                "group": None,
+                "materialized": "test",
+                "severity": "ERROR",
+                "store_failures": None,
+                "where": None,
+                "limit": None,
+                "fail_calc": "count(*)",
+                "warn_if": "!= 0",
+                "error_if": "!= 0",
             }
         )
     )
     tags: Optional[List[str]] = []
-    description: Optional[str] = ''
+    description: Optional[str] = ""
     columns: Optional[Dict[str, ColumnInfo]] = {}
     meta: Optional[Dict[str, Any]] = {}
     group: Optional[str] = None
     docs: Optional[Docs] = Field(
-        default_factory=lambda: Docs.model_validate({'show': True, 'node_color': None})
+        default_factory=lambda: Docs.model_validate({"show": True, "node_color": None})
     )
     patch_path: Optional[str] = None
     build_path: Optional[str] = None
@@ -64,13 +64,13 @@ class SingularTestNode(BaseModel):
     created_at: Optional[float] = 1696465994.413604
     config_call_dict: Optional[Dict[str, Any]] = {}
     relation_name: Optional[str] = None
-    raw_code: Optional[str] = ''
-    language: Optional[str] = 'sql'
+    raw_code: Optional[str] = ""
+    language: Optional[str] = "sql"
     refs: Optional[List[RefArgs]] = []
     sources: Optional[List[List[str]]] = []
     metrics: Optional[List[List[str]]] = []
     depends_on: Optional[DependsOn] = Field(
-        default_factory=lambda: DependsOn.model_validate({'macros': [], 'nodes': []})
+        default_factory=lambda: DependsOn.model_validate({"macros": [], "nodes": []})
     )
     compiled_path: Optional[str] = None
     compiled: Optional[bool] = False
@@ -79,6 +79,6 @@ class SingularTestNode(BaseModel):
     extra_ctes: Optional[List[InjectedCTE]] = []
     contract: Optional[Contract] = Field(
         default_factory=lambda: Contract.model_validate(
-            {'enforced': False, 'checksum': None}
+            {"enforced": False, "checksum": None}
         )
     )

@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 class NodeRelation(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     alias: str
     schema_name: str

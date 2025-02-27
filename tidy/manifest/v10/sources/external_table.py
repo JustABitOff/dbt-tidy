@@ -1,21 +1,21 @@
 from typing import Optional, Dict, Any, Union, List
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class ExternalPartition(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
-    name: Optional[str] = ''
-    description: Optional[str] = ''
-    data_type: Optional[str] = ''
+    name: Optional[str] = ""
+    description: Optional[str] = ""
+    data_type: Optional[str] = ""
     meta: Optional[Dict[str, Any]] = {}
 
 
 class ExternalTable(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
     location: Optional[str] = None
     file_format: Optional[str] = None

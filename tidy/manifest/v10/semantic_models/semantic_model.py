@@ -16,7 +16,7 @@ from tidy.manifest.v10.semantic_models.semantic_model_config import SemanticMode
 
 class SemanticModel(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     resource_type: ResourceType
@@ -35,11 +35,11 @@ class SemanticModel(BaseModel):
     dimensions: Optional[List[Dimension]] = []
     metadata: Optional[SourceFileMetadata] = None
     depends_on: Optional[DependsOn] = Field(
-        default_factory=lambda: DependsOn.model_validate({'macros': [], 'nodes': []})
+        default_factory=lambda: DependsOn.model_validate({"macros": [], "nodes": []})
     )
     refs: Optional[List[RefArgs]] = []
     created_at: Optional[float] = 1696465994.425479
     config: Optional[SemanticModelConfig] = Field(
-        default_factory=lambda: SemanticModelConfig.model_validate({'enabled': True})
+        default_factory=lambda: SemanticModelConfig.model_validate({"enabled": True})
     )
     primary_entity: Optional[str] = None

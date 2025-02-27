@@ -7,7 +7,7 @@ from tidy.manifest.v10.bases.enums import ConstraintType
 
 class ColumnLevelConstraint(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     type: ConstraintType
     name: Optional[str] = None
@@ -15,12 +15,13 @@ class ColumnLevelConstraint(BaseModel):
     warn_unenforced: Optional[bool] = True
     warn_unsupported: Optional[bool] = True
 
+
 class ColumnInfo(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
     name: str
-    description: Optional[str] = ''
+    description: Optional[str] = ""
     meta: Optional[Dict[str, Any]] = {}
     data_type: Optional[str] = None
     constraints: Optional[List[ColumnLevelConstraint]] = []

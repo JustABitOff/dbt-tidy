@@ -4,6 +4,6 @@ from pydantic import BaseModel, ConfigDict
 
 class MacroDependsOn(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     macros: Optional[List[str]] = []

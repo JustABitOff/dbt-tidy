@@ -1,4 +1,3 @@
-import pathlib
 from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -24,9 +23,9 @@ from tidy.manifest.v10.semantic_models.semantic_model import SemanticModel
 
 class Manifest(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
-    metadata: ManifestMetadata = Field(..., description='Metadata about the manifest')
+    metadata: ManifestMetadata = Field(..., description="Metadata about the manifest")
     nodes: Dict[
         str,
         Union[
@@ -41,28 +40,28 @@ class Manifest(BaseModel):
             SeedNode,
         ],
     ] = Field(
-        ..., description='The nodes defined in the dbt project and its dependencies'
+        ..., description="The nodes defined in the dbt project and its dependencies"
     )
     sources: Dict[str, SourceDefinition] = Field(
-        ..., description='The sources defined in the dbt project and its dependencies'
+        ..., description="The sources defined in the dbt project and its dependencies"
     )
     macros: Dict[str, Macro] = Field(
-        ..., description='The macros defined in the dbt project and its dependencies'
+        ..., description="The macros defined in the dbt project and its dependencies"
     )
     docs: Dict[str, Documentation] = Field(
-        ..., description='The docs defined in the dbt project and its dependencies'
+        ..., description="The docs defined in the dbt project and its dependencies"
     )
     exposures: Dict[str, Exposure] = Field(
-        ..., description='The exposures defined in the dbt project and its dependencies'
+        ..., description="The exposures defined in the dbt project and its dependencies"
     )
     metrics: Dict[str, Metric] = Field(
-        ..., description='The metrics defined in the dbt project and its dependencies'
+        ..., description="The metrics defined in the dbt project and its dependencies"
     )
     groups: Dict[str, Group] = Field(
-        ..., description='The groups defined in the dbt project'
+        ..., description="The groups defined in the dbt project"
     )
     selectors: Dict[str, Any] = Field(
-        ..., description='The selectors defined in selectors.yml'
+        ..., description="The selectors defined in selectors.yml"
     )
     disabled: Optional[
         Dict[
@@ -85,16 +84,16 @@ class Manifest(BaseModel):
                 ]
             ],
         ]
-    ] = Field(None, description='A mapping of the disabled nodes in the target')
+    ] = Field(None, description="A mapping of the disabled nodes in the target")
     parent_map: Optional[Dict[str, List[str]]] = Field(
-        None, description='A mapping from\xa0child nodes to their dependencies'
+        None, description="A mapping from\xa0child nodes to their dependencies"
     )
     child_map: Optional[Dict[str, List[str]]] = Field(
-        None, description='A mapping from parent nodes to their dependents'
+        None, description="A mapping from parent nodes to their dependents"
     )
     group_map: Optional[Dict[str, List[str]]] = Field(
-        None, description='A mapping from group names to their nodes'
+        None, description="A mapping from group names to their nodes"
     )
     semantic_models: Dict[str, SemanticModel] = Field(
-        ..., description='The semantic models defined in the dbt project'
+        ..., description="The semantic models defined in the dbt project"
     )

@@ -1,6 +1,7 @@
-from typing import Optional, Literal, List, Dict, Any
+from typing import Optional, List, Dict, Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from jinja2 import Environment, nodes
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from tidy.manifest.v10.bases.file_hash import FileHash
 from tidy.manifest.v10.bases.column_info import ColumnInfo
@@ -16,10 +17,10 @@ from tidy.manifest.v10.nodes.snapshots.snapshot_config import SnapshotConfig
 
 class SnapshotNode(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     database: Optional[str] = None
-    schema_: str = Field(..., alias='schema')
+    schema_: str = Field(..., alias="schema")
     name: str
     resource_type: ResourceType
     package_name: str
@@ -31,12 +32,12 @@ class SnapshotNode(BaseModel):
     checksum: FileHash
     config: SnapshotConfig
     tags: Optional[List[str]] = []
-    description: Optional[str] = ''
+    description: Optional[str] = ""
     columns: Optional[Dict[str, ColumnInfo]] = {}
     meta: Optional[Dict[str, Any]] = {}
     group: Optional[str] = None
     docs: Optional[Docs] = Field(
-        default_factory=lambda: Docs.model_validate({'show': True, 'node_color': None})
+        default_factory=lambda: Docs.model_validate({"show": True, "node_color": None})
     )
     patch_path: Optional[str] = None
     build_path: Optional[str] = None
@@ -45,13 +46,13 @@ class SnapshotNode(BaseModel):
     created_at: Optional[float] = 1696465994.418854
     config_call_dict: Optional[Dict[str, Any]] = {}
     relation_name: Optional[str] = None
-    raw_code: Optional[str] = ''
-    language: Optional[str] = 'sql'
+    raw_code: Optional[str] = ""
+    language: Optional[str] = "sql"
     refs: Optional[List[RefArgs]] = []
     sources: Optional[List[List[str]]] = []
     metrics: Optional[List[List[str]]] = []
     depends_on: Optional[DependsOn] = Field(
-        default_factory=lambda: DependsOn.model_validate({'macros': [], 'nodes': []})
+        default_factory=lambda: DependsOn.model_validate({"macros": [], "nodes": []})
     )
     compiled_path: Optional[str] = None
     compiled: Optional[bool] = False
@@ -60,7 +61,30 @@ class SnapshotNode(BaseModel):
     extra_ctes: Optional[List[InjectedCTE]] = []
     contract: Optional[Contract] = Field(
         default_factory=lambda: Contract.model_validate(
-            {'enforced': False, 'checksum': None}
+            {"enforced": False, "checksum": None}
         )
     )
     defer_relation: Optional[DeferRelation] = None
+
+    @computed_field
+    @property
+    def config_block(self) -> Optional[Dict[str, Any]]:
+        env = Environment(extensions=["jinja2.ext.do"])
+        ast = env.parse(self.raw_code)
+
+        def find_config_call(node):
+            if (
+                isinstance(node, nodes.Call)
+                and isinstance(node.node, nodes.Name)
+                and node.node.name == "config"
+            ):
+                return {kw.key: kw.value.as_const() for kw in node.kwargs}
+
+            for child in node.iter_child_nodes():
+                result = find_config_call(child)
+                if result:
+                    return result
+
+            return None
+
+        return find_config_call(ast)

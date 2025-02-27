@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -10,7 +10,7 @@ from tidy.manifest.v10.bases.enums import SupportedLanguage, ResourceType
 
 class Macro(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     resource_type: ResourceType
@@ -20,12 +20,12 @@ class Macro(BaseModel):
     unique_id: str
     macro_sql: str
     depends_on: Optional[MacroDependsOn] = Field(
-        default_factory=lambda: MacroDependsOn.model_validate({'macros': []})
+        default_factory=lambda: MacroDependsOn.model_validate({"macros": []})
     )
-    description: Optional[str] = ''
+    description: Optional[str] = ""
     meta: Optional[Dict[str, Any]] = {}
     docs: Optional[Docs] = Field(
-        default_factory=lambda: Docs.model_validate({'show': True, 'node_color': None})
+        default_factory=lambda: Docs.model_validate({"show": True, "node_color": None})
     )
     patch_path: Optional[str] = None
     arguments: Optional[List[MacroArgument]] = []

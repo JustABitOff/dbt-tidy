@@ -1,4 +1,4 @@
-from typing import Literal, List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -13,7 +13,7 @@ from tidy.manifest.v10.metrics.where_filter import WhereFilter
 
 class Metric(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     resource_type: ResourceType
@@ -32,13 +32,13 @@ class Metric(BaseModel):
     tags: Optional[List[str]] = []
     config: Optional[MetricConfig] = Field(
         default_factory=lambda: MetricConfig.model_validate(
-            {'enabled': True, 'group': None}
+            {"enabled": True, "group": None}
         )
     )
     unrendered_config: Optional[Dict[str, Any]] = {}
     sources: Optional[List[List[str]]] = []
     depends_on: Optional[DependsOn] = Field(
-        default_factory=lambda: DependsOn.model_validate({'macros': [], 'nodes': []})
+        default_factory=lambda: DependsOn.model_validate({"macros": [], "nodes": []})
     )
     refs: Optional[List[RefArgs]] = []
     metrics: Optional[List[List[str]]] = []

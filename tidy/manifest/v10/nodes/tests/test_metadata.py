@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 class TestMetadata(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     kwargs: Optional[Dict[str, Any]] = {}

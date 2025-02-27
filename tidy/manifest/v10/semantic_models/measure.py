@@ -7,7 +7,7 @@ from tidy.manifest.v10.bases.enums import Agg
 
 class MeasureAggregationParameters(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     percentile: Optional[float] = None
     use_discrete_percentile: Optional[bool] = False
@@ -16,7 +16,7 @@ class MeasureAggregationParameters(BaseModel):
 
 class NonAdditiveDimension(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     window_choice: Agg
@@ -25,7 +25,7 @@ class NonAdditiveDimension(BaseModel):
 
 class Measure(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     agg: Agg

@@ -1,6 +1,7 @@
 from typing import Optional, Literal, List, Dict, Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from jinja2 import Environment, nodes
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from tidy.manifest.v12.bases.file_hash import FileHash
 from tidy.manifest.v12.bases.column_info import ColumnInfo
@@ -57,3 +58,26 @@ class Snapshot(BaseModel):
     field_pre_injected_sql: Optional[str] = Field(None, alias="_pre_injected_sql")
     contract: Optional[Contract] = Field(None, title="Contract")
     defer_relation: Optional[DeferRelation] = None
+
+    @computed_field
+    @property
+    def config_block(self) -> Optional[Dict[str, Any]]:
+        env = Environment(extensions=["jinja2.ext.do"])
+        ast = env.parse(self.raw_code)
+
+        def find_config_call(node):
+            if (
+                isinstance(node, nodes.Call)
+                and isinstance(node.node, nodes.Name)
+                and node.node.name == "config"
+            ):
+                return {kw.key: kw.value.as_const() for kw in node.kwargs}
+
+            for child in node.iter_child_nodes():
+                result = find_config_call(child)
+                if result:
+                    return result
+
+            return None
+
+        return find_config_call(ast)

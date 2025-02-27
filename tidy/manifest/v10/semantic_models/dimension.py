@@ -8,7 +8,7 @@ from tidy.manifest.v10.bases.enums import GrainToDate, DimensionType
 
 class DimensionValidityParams(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     is_start: Optional[bool] = False
     is_end: Optional[bool] = False
@@ -16,16 +16,15 @@ class DimensionValidityParams(BaseModel):
 
 class DimensionTypeParams(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     time_granularity: GrainToDate
     validity_params: Optional[DimensionValidityParams] = None
 
 
-
 class Dimension(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     type: DimensionType

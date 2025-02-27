@@ -8,7 +8,7 @@ from tidy.manifest.v10.metrics.where_filter import WhereFilter
 
 class MetricTimeWindow(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     count: int
     granularity: GrainToDate
@@ -16,7 +16,7 @@ class MetricTimeWindow(BaseModel):
 
 class MetricInputMeasure(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     filter: Optional[WhereFilter] = None
@@ -27,7 +27,7 @@ class MetricInputMeasure(BaseModel):
 
 class MetricInput(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     filter: Optional[WhereFilter] = None
@@ -38,7 +38,7 @@ class MetricInput(BaseModel):
 
 class MetricTypeParams(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     measure: Optional[MetricInputMeasure] = None
     input_measures: Optional[List[MetricInputMeasure]] = []

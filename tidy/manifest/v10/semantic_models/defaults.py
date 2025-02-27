@@ -5,6 +5,6 @@ from pydantic import BaseModel, ConfigDict
 
 class Defaults(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     agg_time_dimension: Optional[str] = None

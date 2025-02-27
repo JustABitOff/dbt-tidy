@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 class RefArgs(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     package: Optional[str] = None

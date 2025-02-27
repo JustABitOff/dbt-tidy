@@ -12,10 +12,10 @@ from tidy.manifest.v10.sources.source_config import SourceConfig
 
 class SourceDefinition(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     database: Optional[str] = None
-    schema_: str = Field(..., alias='schema')
+    schema_: str = Field(..., alias="schema")
     name: str
     resource_type: ResourceType
     package_name: str
@@ -29,19 +29,19 @@ class SourceDefinition(BaseModel):
     identifier: str
     quoting: Optional[Quoting] = Field(
         default_factory=lambda: Quoting.model_validate(
-            {'database': None, 'schema': None, 'identifier': None, 'column': None}
+            {"database": None, "schema": None, "identifier": None, "column": None}
         )
     )
     loaded_at_field: Optional[str] = None
     freshness: Optional[FreshnessThreshold] = None
     external: Optional[ExternalTable] = None
-    description: Optional[str] = ''
+    description: Optional[str] = ""
     columns: Optional[Dict[str, ColumnInfo]] = {}
     meta: Optional[Dict[str, Any]] = {}
     source_meta: Optional[Dict[str, Any]] = {}
     tags: Optional[List[str]] = []
     config: Optional[SourceConfig] = Field(
-        default_factory=lambda: SourceConfig.model_validate({'enabled': True})
+        default_factory=lambda: SourceConfig.model_validate({"enabled": True})
     )
     patch_path: Optional[str] = None
     unrendered_config: Optional[Dict[str, Any]] = {}

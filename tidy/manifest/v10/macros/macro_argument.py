@@ -5,8 +5,8 @@ from pydantic import BaseModel, ConfigDict
 
 class MacroArgument(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     type: Optional[str] = None
-    description: Optional[str] = ''
+    description: Optional[str] = ""

@@ -5,6 +5,6 @@ from pydantic import BaseModel, ConfigDict
 
 class ExposureConfig(BaseModel):
     model_config = ConfigDict(
-        extra='allow',
+        extra="allow",
     )
     enabled: Optional[bool] = True

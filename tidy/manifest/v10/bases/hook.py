@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict
 
 class Hook(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     sql: str
     transaction: Optional[bool] = True

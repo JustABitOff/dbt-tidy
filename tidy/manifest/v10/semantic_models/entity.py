@@ -7,7 +7,7 @@ from tidy.manifest.v10.bases.enums import EntityType
 
 class Entity(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     name: str
     type: EntityType

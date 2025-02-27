@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 class FileSlice(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     filename: str
     content: str
@@ -13,7 +13,7 @@ class FileSlice(BaseModel):
 
 class SourceFileMetadata(BaseModel):
     model_config = ConfigDict(
-        extra='forbid',
+        extra="forbid",
     )
     repo_file_path: str
     file_slice: FileSlice

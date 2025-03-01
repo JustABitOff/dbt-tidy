@@ -1,27 +1,54 @@
 import importlib
 import pkgutil
+import pathlib
+import sys
 
 import click
 
-from tidy.sweeps import __name__ as checks_pkg_name
-from tidy.sweeps import __path__ as checks_pkg_path
 from tidy.manifest.v12.manifest import parse_manifest
 from tidy.sweeps.base import CheckResult
 
+DEFAULT_CHECKS_PATH = pathlib.Path(__file__).parent.parent / "sweeps"
+USER_CHECKS_PATH = pathlib.Path.cwd() / ".tidy"
+
+
+def import_module_from_path(module_name, path):
+    """Dynamically import a module from a given file path."""
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 def discover_and_run_checks(manifest, check_names=None):
     results = []
 
-    for finder, name, ispkg in pkgutil.walk_packages(
-        checks_pkg_path, checks_pkg_name + "."
-    ):
-        if not ispkg:
-            module = importlib.import_module(name)
+    for finder, name, ispkg in pkgutil.walk_packages([str(DEFAULT_CHECKS_PATH)], "tidy.sweeps."):
+        if ispkg:
+            continue
 
+        module = importlib.import_module(name)
+        check_name = name.split('.')[-1]
+
+        if check_names and check_name not in check_names:
+            continue
+
+        if hasattr(module, "sweep"):
+            check_result = module.sweep(manifest)
+            if isinstance(check_result, CheckResult):
+                results.append(check_result)
+
+    if USER_CHECKS_PATH.exists():
+        sys.path.insert(0, str(USER_CHECKS_PATH))
+
+        for check_file in USER_CHECKS_PATH.rglob("*.py"):
+            module_name = check_file.relative_to(USER_CHECKS_PATH).with_suffix("").as_posix().replace("/", ".")
+
+            if check_names and module_name.split(".")[-1] not in check_names:
+                continue
+
+            module = import_module_from_path(module_name, check_file)
+            
             if hasattr(module, "sweep"):
-                if check_names and name.split(".")[-1] not in check_names:
-                    continue
-
                 check_result = module.sweep(manifest)
                 if isinstance(check_result, CheckResult):
                     results.append(check_result)

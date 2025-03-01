@@ -1,8 +1,7 @@
-from tidy.manifest.v12.manifest import WritableManifest
-from tidy.sweeps.base import CheckResult, CheckStatus
+from tidy.sweeps.base import sweep
 
-
-def sweep(manifest: WritableManifest) -> CheckResult:
+@sweep("Direct Join to Source")
+def direct_join_to_source(manifest) -> list:
     failures = []
 
     for node in manifest.nodes.values():
@@ -11,8 +10,4 @@ def sweep(manifest: WritableManifest) -> CheckResult:
         ):
             failures.append(f"{node.unique_id}")
 
-    return CheckResult(
-        name="Direct Join to Source",
-        status=CheckStatus.PASS if not failures else CheckStatus.FAIL,
-        nodes=failures,
-    )
+    return failures

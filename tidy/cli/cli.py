@@ -27,15 +27,19 @@ def discover_and_run_checks(manifest, check_names=None):
             continue
 
         module = importlib.import_module(name)
-        check_name = name.split('.')[-1]
 
-        if check_names and check_name not in check_names:
-            continue
+        for attr_name in dir(module):
+            attr = getattr(module, attr_name)
 
-        if hasattr(module, "sweep"):
-            check_result = module.sweep(manifest)
-            if isinstance(check_result, CheckResult):
-                results.append(check_result)
+            if callable(attr) and getattr(attr, "__is_sweep__", False):
+                check_name = getattr(attr, "__sweep_name__", attr_name)
+
+                if check_names and check_name not in check_names:
+                    continue
+
+                check_result = attr(manifest)
+                if isinstance(check_result, CheckResult):
+                    results.append(check_result)
 
     if USER_CHECKS_PATH.exists():
         sys.path.insert(0, str(USER_CHECKS_PATH))
@@ -48,10 +52,18 @@ def discover_and_run_checks(manifest, check_names=None):
 
             module = import_module_from_path(module_name, check_file)
             
-            if hasattr(module, "sweep"):
-                check_result = module.sweep(manifest)
-                if isinstance(check_result, CheckResult):
-                    results.append(check_result)
+            for attr_name in dir(module):
+                attr = getattr(module, attr_name)
+
+                if callable(attr) and getattr(attr, "__is_sweep__", False):
+                    check_name = getattr(attr, "__sweep_name__", attr_name)
+
+                    if check_names and check_name not in check_names:
+                        continue
+
+                    check_result = attr(manifest)
+                    if isinstance(check_result, CheckResult):
+                        results.append(check_result)
 
     return results
 

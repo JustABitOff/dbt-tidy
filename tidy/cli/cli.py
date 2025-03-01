@@ -1,27 +1,44 @@
 import importlib
 import pkgutil
+import pathlib
+import sys
 
 import click
 
-from tidy.sweeps import __name__ as checks_pkg_name
-from tidy.sweeps import __path__ as checks_pkg_path
 from tidy.manifest.v12.manifest import parse_manifest
 from tidy.sweeps.base import CheckResult
+
+DEFAULT_CHECKS_PATH = pathlib.Path(__file__).parent.parent / "sweeps"
+USER_CHECKS_PATH = pathlib.Path.cwd() / "tidy_custom"
 
 
 def discover_and_run_checks(manifest, check_names=None):
     results = []
 
-    for finder, name, ispkg in pkgutil.walk_packages(
-        checks_pkg_path, checks_pkg_name + "."
-    ):
-        if not ispkg:
+    if USER_CHECKS_PATH.exists():
+        sys.path.insert(0, str(USER_CHECKS_PATH))
+
+    for checks_path, checks_pkg_name in [
+        (DEFAULT_CHECKS_PATH, "tidy.sweeps"),
+        (USER_CHECKS_PATH, "tidy_custom"),
+    ]:
+        if not checks_path.exists():
+            continue
+
+        for finder, name, ispkg in pkgutil.walk_packages(
+            [str(checks_path)], f"{checks_pkg_name}."
+        ):
+            if ispkg:
+                continue
+
             module = importlib.import_module(name)
 
-            if hasattr(module, "sweep"):
-                if check_names and name.split(".")[-1] not in check_names:
-                    continue
+            check_name = name.split(".")[-1]
 
+            if check_names and check_name not in check_names:
+                continue
+
+            if hasattr(module, "sweep"):
                 check_result = module.sweep(manifest)
                 if isinstance(check_result, CheckResult):
                     results.append(check_result)

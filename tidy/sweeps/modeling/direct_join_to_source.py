@@ -6,9 +6,8 @@ def sweep(manifest: WritableManifest) -> CheckResult:
     failures = []
 
     for node in manifest.nodes.values():
-        if (
-            node.resource_type == 'model'
-            and {'source', 'model'}.issubset({i.split(".")[0] for i in node.depends_on.nodes})
+        if node.resource_type == "model" and {"source", "model"}.issubset(
+            {i.split(".")[0] for i in node.depends_on.nodes}
         ):
             failures.append(f"{node.unique_id}")
 

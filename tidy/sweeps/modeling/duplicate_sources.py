@@ -7,16 +7,12 @@ from tidy.sweeps.base import CheckResult, CheckStatus
 def sweep(manifest: WritableManifest) -> CheckResult:
     failures = []
     sources = [
-        (
-            source.unique_id,
-            (source.database+'.'+source.schema_+'.'+source.name)
-        ) 
+        (source.unique_id, (source.database + "." + source.schema_ + "." + source.name))
         for source in manifest.sources.values()
     ]
 
     duplicate_sources = [
-        source for source in
-        sources if Counter(i[1] for i in sources)[source[1]] > 1
+        source for source in sources if Counter(i[1] for i in sources)[source[1]] > 1
     ]
 
     for source in duplicate_sources:

@@ -12,12 +12,14 @@ from tidy.sweeps.base import CheckResult
 def discover_and_run_checks(manifest, check_names=None):
     results = []
 
-    for finder, name, ispkg in pkgutil.walk_packages(checks_pkg_path, checks_pkg_name + "."):
+    for finder, name, ispkg in pkgutil.walk_packages(
+        checks_pkg_path, checks_pkg_name + "."
+    ):
         if not ispkg:
             module = importlib.import_module(name)
 
             if hasattr(module, "sweep"):
-                if check_names and name.split('.')[-1] not in check_names:
+                if check_names and name.split(".")[-1] not in check_names:
                     continue
 
                 check_result = module.sweep(manifest)
@@ -34,23 +36,23 @@ def cli():
 
 @cli.command()
 @click.option(
-    '--manifest-path',
+    "--manifest-path",
     default="target/manifest.json",
     show_default=True,
-    help='Path to the dbt manifest file.'
+    help="Path to the dbt manifest file.",
 )
 @click.option(
     "--max-details",
     "-md",
     default=5,
     show_default=True,
-    help="Maximum number of details to display per result."
+    help="Maximum number of details to display per result.",
 )
 @click.option(
     "--sweeps",
     "-s",
     multiple=True,
-    help="List of check names to run. If not specified, all checks will be run."
+    help="List of check names to run. If not specified, all checks will be run.",
 )
 def sweep(
     manifest_path,
@@ -62,11 +64,9 @@ def sweep(
     results = discover_and_run_checks(manifest, sweeps)
 
     for result in results:
-        status_color = {
-            "pass": "green",
-            "fail": "red",
-            "warning": "yellow"
-        }.get(result.status.value, "white")
+        status_color = {"pass": "green", "fail": "red", "warning": "yellow"}.get(
+            result.status.value, "white"
+        )
 
         click.secho(f"\n{result.name}", fg="cyan", bold=True)
         click.secho(f"Status: {result.status.value}", fg=status_color)
@@ -75,9 +75,12 @@ def sweep(
             click.secho("Nodes:", fg="blue")
             for detail in result.nodes[:max_details]:
                 click.echo(f"  - {detail}")
-            
+
             if len(result.nodes) > max_details:
-                click.secho(f"  ...and {len(result.nodes) - max_details} more", fg="yellow")
+                click.secho(
+                    f"  ...and {len(result.nodes) - max_details} more", fg="yellow"
+                )
+
 
 if __name__ == "__main__":
     cli()

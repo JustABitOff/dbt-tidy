@@ -1,10 +1,9 @@
 from collections import Counter
 
-from tidy.manifest.v12.manifest import WritableManifest
-from tidy.sweeps.base import CheckResult, CheckStatus
+from tidy.sweeps.base import sweep
 
-
-def sweep(manifest: WritableManifest) -> CheckResult:
+@sweep("Duplicate Sources")
+def duplicate_sources(manifest) -> list:
     failures = []
     sources = [
         (source.unique_id, (source.database + "." + source.schema_ + "." + source.name))
@@ -18,8 +17,4 @@ def sweep(manifest: WritableManifest) -> CheckResult:
     for source in duplicate_sources:
         failures.append(f"{source[0]}")
 
-    return CheckResult(
-        name="Duplicates Sources",
-        status=CheckStatus.PASS if not failures else CheckStatus.FAIL,
-        nodes=failures,
-    )
+    return failures

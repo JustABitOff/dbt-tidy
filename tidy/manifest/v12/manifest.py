@@ -109,5 +109,5 @@ class WritableManifest(BaseModel):
     ] = Field(..., description="A mapping of the disabled nodes in the target")
 
 
-def parse_manifest(manifest_path: str = "target/manifest.json") -> WritableManifest:
+def parse_manifest(manifest_path: str) -> WritableManifest:
     return WritableManifest.model_validate_json(pathlib.Path(manifest_path).read_text())

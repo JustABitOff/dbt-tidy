@@ -13,5 +13,4 @@ class CheckStatus(str, Enum):
 class CheckResult(BaseModel):
     name: str
     status: CheckStatus
-    details: Optional[List[str]] = None
-    severity: Optional[str] = "info"
+    nodes: Optional[List[str]] = None

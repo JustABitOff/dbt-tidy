@@ -39,3 +39,7 @@ factory-boy = "^3.3.3"
 coverage = "^7.6.12"
 datamodel-code-generator = {extras = ["http"], version = "^0.28.1"}
 
+[tool.poetry.scripts]
+tidy = "tidy.cli.cli:cli"
+
+

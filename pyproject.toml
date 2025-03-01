@@ -9,7 +9,8 @@ description = "Tidy is a Python package designed to review your dbt project and 
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "pydantic (>=2.10.6,<3.0.0)"
+    "pydantic (>=2.10.6,<3.0.0)",
+    "click (>=8.1.8,<9.0.0)"
 ]
 license = "MIT"
 license-files = ["LICENSE"]
@@ -37,4 +38,8 @@ ruff = "^0.9.6"
 factory-boy = "^3.3.3"
 coverage = "^7.6.12"
 datamodel-code-generator = {extras = ["http"], version = "^0.28.1"}
+
+[tool.poetry.scripts]
+tidy = "tidy.cli.cli:cli"
+
 

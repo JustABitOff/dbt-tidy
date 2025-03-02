@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List, Dict, Any, Union
+from typing import Optional, List, Dict, Any, Union, Literal
 
 from jinja2 import Environment, nodes
 from pydantic import BaseModel, ConfigDict, Field, computed_field
@@ -24,7 +24,7 @@ class ModelNode(BaseModel):
     database: Optional[str] = None
     schema_: str = Field(..., alias="schema")
     name: str
-    resource_type: ResourceType
+    resource_type: Literal[ResourceType.model]
     package_name: str
     path: str
     original_file_path: str

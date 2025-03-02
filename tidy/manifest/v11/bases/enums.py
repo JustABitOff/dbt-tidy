@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ResourceType(Enum):
+class ResourceType(StrEnum):
     model = "model"
     analysis = "analysis"
     test = "test"
@@ -20,13 +20,13 @@ class ResourceType(Enum):
     semantic_model = "semantic_model"
 
 
-class OnConfigurationChange(Enum):
+class OnConfigurationChange(StrEnum):
     apply = "apply"
     continue_ = "continue"
     fail = "fail"
 
 
-class ConstraintType(Enum):
+class ConstraintType(StrEnum):
     check = "check"
     not_null = "not_null"
     unique = "unique"
@@ -35,24 +35,24 @@ class ConstraintType(Enum):
     custom = "custom"
 
 
-class Access(Enum):
+class Access(StrEnum):
     private = "private"
     protected = "protected"
     public = "public"
 
 
-class Period(Enum):
+class Period(StrEnum):
     minute = "minute"
     hour = "hour"
     day = "day"
 
 
-class SupportedLanguage(Enum):
+class SupportedLanguage(StrEnum):
     python = "python"
     sql = "sql"
 
 
-class ExposureType(Enum):
+class ExposureType(StrEnum):
     dashboard = "dashboard"
     notebook = "notebook"
     analysis = "analysis"
@@ -60,13 +60,13 @@ class ExposureType(Enum):
     application = "application"
 
 
-class Maturity(Enum):
+class Maturity(StrEnum):
     low = "low"
     medium = "medium"
     high = "high"
 
 
-class MetricType(Enum):
+class MetricType(StrEnum):
     simple = "simple"
     ratio = "ratio"
     cumulative = "cumulative"
@@ -74,7 +74,7 @@ class MetricType(Enum):
     conversion = "conversion"
 
 
-class Granularity(Enum):
+class Granularity(StrEnum):
     day = "day"
     week = "week"
     month = "month"
@@ -82,24 +82,24 @@ class Granularity(Enum):
     year = "year"
 
 
-class MetricCalculation(Enum):
+class MetricCalculation(StrEnum):
     conversions = "conversions"
     conversion_rate = "conversion_rate"
 
 
-class ExportAs(Enum):
+class ExportAs(StrEnum):
     table = "table"
     view = "view"
 
 
-class EntityType(Enum):
+class EntityType(StrEnum):
     foreign = "foreign"
     natural = "natural"
     primary = "primary"
     unique = "unique"
 
 
-class Agg(Enum):
+class Agg(StrEnum):
     sum = "sum"
     min = "min"
     max = "max"
@@ -111,6 +111,6 @@ class Agg(Enum):
     count = "count"
 
 
-class DimensionType(Enum):
+class DimensionType(StrEnum):
     categorical = "categorical"
     time = "time"

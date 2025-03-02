@@ -1,13 +1,13 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class OnConfigurationChange(Enum):
+class OnConfigurationChange(StrEnum):
     apply = "apply"
     continue_ = "continue"
     fail = "fail"
 
 
-class ConstraintType(Enum):
+class ConstraintType(StrEnum):
     check = "check"
     not_null = "not_null"
     unique = "unique"
@@ -16,7 +16,7 @@ class ConstraintType(Enum):
     custom = "custom"
 
 
-class Granularity(Enum):
+class Granularity(StrEnum):
     nanosecond = "nanosecond"
     microsecond = "microsecond"
     millisecond = "millisecond"
@@ -30,7 +30,7 @@ class Granularity(Enum):
     year = "year"
 
 
-class ResourceType(Enum):
+class ResourceType(StrEnum):
     model = "model"
     analysis = "analysis"
     test = "test"
@@ -51,29 +51,29 @@ class ResourceType(Enum):
     fixture = "fixture"
 
 
-class Access(Enum):
+class Access(StrEnum):
     private = "private"
     protected = "protected"
     public = "public"
 
 
-class DependsOn(Enum):
+class DependsOn(StrEnum):
     all = "all"
     any = "any"
 
 
-class Period(Enum):
+class Period(StrEnum):
     minute = "minute"
     hour = "hour"
     day = "day"
 
 
-class SupportedLanguage(Enum):
+class SupportedLanguage(StrEnum):
     python = "python"
     sql = "sql"
 
 
-class ExposureType(Enum):
+class ExposureType(StrEnum):
     dashboard = "dashboard"
     notebook = "notebook"
     analysis = "analysis"
@@ -81,13 +81,13 @@ class ExposureType(Enum):
     application = "application"
 
 
-class Maturity(Enum):
+class Maturity(StrEnum):
     low = "low"
     medium = "medium"
     high = "high"
 
 
-class MetricType(Enum):
+class MetricType(StrEnum):
     simple = "simple"
     ratio = "ratio"
     cumulative = "cumulative"
@@ -95,30 +95,30 @@ class MetricType(Enum):
     conversion = "conversion"
 
 
-class MetricCalculation(Enum):
+class MetricCalculation(StrEnum):
     conversions = "conversions"
     conversion_rate = "conversion_rate"
 
 
-class PeriodAgg(Enum):
+class PeriodAgg(StrEnum):
     first = "first"
     last = "last"
     average = "average"
 
 
-class ExportAs(Enum):
+class ExportAs(StrEnum):
     table = "table"
     view = "view"
 
 
-class EntityType(Enum):
+class EntityType(StrEnum):
     foreign = "foreign"
     natural = "natural"
     primary = "primary"
     unique = "unique"
 
 
-class Agg(Enum):
+class Agg(StrEnum):
     sum = "sum"
     min = "min"
     max = "max"
@@ -130,12 +130,12 @@ class Agg(Enum):
     count = "count"
 
 
-class DimensionType(Enum):
+class DimensionType(StrEnum):
     categorical = "categorical"
     time = "time"
 
 
-class UnitTestFixtureFormat(Enum):
+class UnitTestFixtureFormat(StrEnum):
     csv = "csv"
     dict = "dict"
     sql = "sql"

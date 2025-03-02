@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import StrEnum
 from typing import Optional, List
 from functools import wraps
 from typing import Callable
@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from tidy.manifest.types import ManifestType
 
 
-class CheckStatus(str, Enum):
+class CheckStatus(StrEnum):
     PASS = "pass"
     FAIL = "fail"
     WARNING = "warning"

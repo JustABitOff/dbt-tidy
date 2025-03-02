@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 
-class SourceConfig(BaseModel):
+class SemanticModelConfig(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )

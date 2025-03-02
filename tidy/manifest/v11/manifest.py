@@ -1,4 +1,3 @@
-import pathlib
 from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -23,7 +22,7 @@ from tidy.manifest.v11.saved_queries.saved_query import SavedQuery
 from tidy.manifest.v11.semantic_models.semantic_model import SemanticModel
 
 
-class WritableManifest(BaseModel):
+class ManifestV11(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -105,7 +104,3 @@ class WritableManifest(BaseModel):
     semantic_models: Dict[str, SemanticModel] = Field(
         ..., description="The semantic models defined in the dbt project"
     )
-
-
-def parse_manifest(manifest_path: str = "target/manifest.json") -> WritableManifest:
-    return WritableManifest.model_validate_json(pathlib.Path(manifest_path).read_text())

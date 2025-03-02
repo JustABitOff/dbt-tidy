@@ -21,7 +21,7 @@ from tidy.manifest.v10.groups.group import Group
 from tidy.manifest.v10.semantic_models.semantic_model import SemanticModel
 
 
-class Manifest(BaseModel):
+class ManifestV10(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )

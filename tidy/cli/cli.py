@@ -5,7 +5,7 @@ import sys
 
 import click
 
-from tidy.manifest.v12.manifest import parse_manifest
+from tidy.manifest import ManifestWrapper
 from tidy.sweeps.base import CheckResult
 
 DEFAULT_CHECKS_PATH = pathlib.Path(__file__).parent.parent / "sweeps"
@@ -19,10 +19,13 @@ def import_module_from_path(module_name, path):
     spec.loader.exec_module(module)
     return module
 
+
 def discover_and_run_checks(manifest, check_names=None):
     results = []
 
-    for finder, name, ispkg in pkgutil.walk_packages([str(DEFAULT_CHECKS_PATH)], "tidy.sweeps."):
+    for finder, name, ispkg in pkgutil.walk_packages(
+        [str(DEFAULT_CHECKS_PATH)], "tidy.sweeps."
+    ):
         if ispkg:
             continue
 
@@ -45,13 +48,18 @@ def discover_and_run_checks(manifest, check_names=None):
         sys.path.insert(0, str(USER_CHECKS_PATH))
 
         for check_file in USER_CHECKS_PATH.rglob("*.py"):
-            module_name = check_file.relative_to(USER_CHECKS_PATH).with_suffix("").as_posix().replace("/", ".")
+            module_name = (
+                check_file.relative_to(USER_CHECKS_PATH)
+                .with_suffix("")
+                .as_posix()
+                .replace("/", ".")
+            )
 
             if check_names and module_name.split(".")[-1] not in check_names:
                 continue
 
             module = import_module_from_path(module_name, check_file)
-            
+
             for attr_name in dir(module):
                 attr = getattr(module, attr_name)
 
@@ -98,7 +106,8 @@ def sweep(
     max_details,
     sweeps,
 ):
-    manifest = parse_manifest(manifest_path)
+    manifest = ManifestWrapper.load(manifest_path)
+
     click.secho("Sweeping...", fg="cyan", bold=True)
     results = discover_and_run_checks(manifest, sweeps)
 

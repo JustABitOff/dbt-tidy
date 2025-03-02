@@ -1,9 +1,10 @@
 from collections import Counter
 
 from tidy.sweeps.base import sweep
+from tidy.manifest.types import ManifestType
 
 @sweep("Duplicate Sources")
-def duplicate_sources(manifest) -> list:
+def duplicate_sources(manifest: ManifestType) -> list:
     failures = []
     sources = [
         (source.unique_id, (source.database + "." + source.schema_ + "." + source.name))

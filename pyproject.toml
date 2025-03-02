@@ -3,7 +3,7 @@ requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
-name = "tidy"
+name = "tidy-dbt"
 version = "0.1.0"
 description = "Tidy is a Python package designed to review your dbt project and enforce validation checks for project structure and standards."
 readme = "README.md"
@@ -29,6 +29,11 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/JustABitOff/tidy"
+
+[tool.poetry]
+packages = [
+    { include = "tidy" },
+] 
 
 [tool.setuptools.packages.find]
 where = ["tidy"]

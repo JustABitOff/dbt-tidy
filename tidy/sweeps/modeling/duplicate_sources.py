@@ -3,6 +3,7 @@ from collections import Counter
 from tidy.sweeps.base import sweep
 from tidy.manifest.types import ManifestType
 
+
 @sweep("Duplicate Sources")
 def duplicate_sources(manifest: ManifestType) -> list:
     failures = []

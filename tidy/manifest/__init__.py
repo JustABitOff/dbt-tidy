@@ -30,7 +30,6 @@ class ManifestWrapper(BaseModel):
 
     @classmethod
     def load(cls, manifest_path: Path):
-        """Load and parse the manifest file, returning the correct versioned model."""
         with open(manifest_path, "r") as f:
             metadata = json.loads(f.read())["metadata"]
 

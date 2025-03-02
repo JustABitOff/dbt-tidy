@@ -1,6 +1,6 @@
-import pytest
 from tidy.manifest.v11.nodes.snapshots.snapshot import Snapshot
 from tidy.manifest.v11.nodes.snapshots.snapshot_config import SnapshotConfig
+
 
 def test_config_block_extraction():
     raw_code = """

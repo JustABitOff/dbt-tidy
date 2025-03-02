@@ -1,4 +1,3 @@
-import pytest
 from tidy.manifest.types import ManifestType
 from tidy.sweeps.base import sweep, CheckResult, CheckStatus
 
@@ -29,7 +28,7 @@ def test_sweep_decorator_fail():
     assert result.nodes == ["node_1", "node_2"]
 
 
-def test_sweep_decorator_metadata():  
+def test_sweep_decorator_metadata():
     @sweep("metadata_sweep")
     def mock_sweep(manifest: ManifestType):
         return []

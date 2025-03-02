@@ -1,5 +1,5 @@
-import pytest
 from tidy.manifest.v12.nodes.models.model import Model
+
 
 def test_config_block_extraction():
     raw_code = """

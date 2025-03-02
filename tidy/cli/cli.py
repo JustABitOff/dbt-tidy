@@ -8,7 +8,7 @@ import click
 from tidy.manifest import ManifestWrapper
 from tidy.sweeps.base import CheckResult
 
-DEFAULT_CHECKS_PATH = pathlib.Path(__file__).parent.parent / "sweeps"
+DEFAULT_CHECKS_PATH = importlib.resources.files(importlib.import_module("tidy.sweeps"))
 USER_CHECKS_PATH = pathlib.Path.cwd() / ".tidy"
 
 
@@ -32,6 +32,7 @@ def discover_and_run_checks(manifest, check_names=None):
         module = importlib.import_module(name)
 
         for attr_name in dir(module):
+            # breakpoint()
             attr = getattr(module, attr_name)
 
             if callable(attr) and getattr(attr, "__is_sweep__", False):
@@ -62,7 +63,6 @@ def discover_and_run_checks(manifest, check_names=None):
 
             for attr_name in dir(module):
                 attr = getattr(module, attr_name)
-
                 if callable(attr) and getattr(attr, "__is_sweep__", False):
                     check_name = getattr(attr, "__sweep_name__", attr_name)
 

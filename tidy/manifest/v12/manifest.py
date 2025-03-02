@@ -1,4 +1,3 @@
-import pathlib
 from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -23,7 +22,7 @@ from tidy.manifest.v12.semantic_models.semantic_model import SemanticModel
 from tidy.manifest.v12.unit_tests.unit_test_definition import UnitTestDefinition
 
 
-class WritableManifest(BaseModel):
+class ManifestV12(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -107,7 +106,3 @@ class WritableManifest(BaseModel):
             ],
         ]
     ] = Field(..., description="A mapping of the disabled nodes in the target")
-
-
-def parse_manifest(manifest_path: str) -> WritableManifest:
-    return WritableManifest.model_validate_json(pathlib.Path(manifest_path).read_text())

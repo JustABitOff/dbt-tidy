@@ -32,7 +32,6 @@ def discover_and_run_checks(manifest, check_names=None):
         module = importlib.import_module(name)
 
         for attr_name in dir(module):
-            # breakpoint()
             attr = getattr(module, attr_name)
 
             if callable(attr) and getattr(attr, "__is_sweep__", False):

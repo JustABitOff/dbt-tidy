@@ -1,10 +1,8 @@
 from typing import Optional, Literal, List, Dict, Any, Union
 
-from functools import cached_property
 
 from jinja2 import Environment, nodes
 from pydantic import BaseModel, ConfigDict, Field, computed_field
-import networkx as nx
 
 from tidy.manifest.v12.bases.file_hash import FileHash
 from tidy.manifest.v12.bases.column_info import ColumnInfo
@@ -96,4 +94,3 @@ class Model(BaseModel):
             return None
 
         return find_config_call(ast)
-

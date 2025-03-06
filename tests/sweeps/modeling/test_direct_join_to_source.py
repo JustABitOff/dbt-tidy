@@ -54,7 +54,7 @@ def test_manifest_v10_direct_join_to_source_fail():
     )
 
     result = direct_join_to_source(mock_manifest)
-    
+
     expected = CheckResult(
         name=direct_join_to_source.__sweep_name__,
         status=CheckStatus.FAIL,
@@ -94,7 +94,7 @@ def test_manifest_v10_direct_join_to_source_pass():
     )
 
     result = direct_join_to_source(mock_manifest)
-    
+
     expected = CheckResult(
         name=direct_join_to_source.__sweep_name__,
         status=CheckStatus.PASS,

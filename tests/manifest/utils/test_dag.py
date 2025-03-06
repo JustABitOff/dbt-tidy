@@ -12,13 +12,13 @@ from tidy.manifest.utils.dag import (
 @pytest.fixture
 def mock_manifest():
     manifest = MagicMock()
-    
+
     manifest.parent_map = {
-        "model_1": ["source_1", "source_2"], 
-        "model_2": ["source_3"], 
+        "model_1": ["source_1", "source_2"],
+        "model_2": ["source_3"],
         "model_3": ["model_1", "model_2"],
     }
-    
+
     return manifest
 
 
@@ -26,28 +26,37 @@ def mock_manifest():
 def graph():
     graph = nx.DiGraph()
 
-    graph.add_edges_from([
-        ("source_1", "model_1"),
-        ("source_2", "model_1"),
-        ("source_3", "model_2"),
-        ("model_1", "model_3"),
-        ("model_2", "model_3")
-    ])
+    graph.add_edges_from(
+        [
+            ("source_1", "model_1"),
+            ("source_2", "model_1"),
+            ("source_3", "model_2"),
+            ("model_1", "model_3"),
+            ("model_2", "model_3"),
+        ]
+    )
 
     return graph
 
 
 def test_build_dbt_graph_from_manifest(mock_manifest):
     graph = build_dbt_graph_from_manifest(mock_manifest)
-    
-    expected_nodes = {"model_1", "model_2", "model_3", "source_1", "source_2", "source_3"}
-    
+
+    expected_nodes = {
+        "model_1",
+        "model_2",
+        "model_3",
+        "source_1",
+        "source_2",
+        "source_3",
+    }
+
     expected_edges = {
         ("source_1", "model_1"),
         ("source_2", "model_1"),
         ("source_3", "model_2"),
-        ('model_1', 'model_3'),
-        ('model_2', 'model_3')
+        ("model_1", "model_3"),
+        ("model_2", "model_3"),
     }
 
     assert isinstance(graph, nx.DiGraph)
@@ -63,7 +72,7 @@ def test_get_ancestors(graph):
         ("source_2", 2),
         ("source_3", 2),
         ("model_1", 1),
-        ("model_2", 1)
+        ("model_2", 1),
     ]
 
     ancestors_sorted = sorted(ancestors, key=lambda x: x[0])
@@ -81,10 +90,7 @@ def test_get_ancestors_no_ancestors(graph):
 def test_get_descendants(graph):
     descendants = get_descendants(graph, "source_1")
 
-    expected_descendants = [
-        ("model_1", 1),
-        ("model_3", 2)
-    ]
+    expected_descendants = [("model_1", 1), ("model_3", 2)]
 
     descendants_sorted = sorted(descendants, key=lambda x: x[0])
     expected_sorted = sorted(expected_descendants, key=lambda x: x[0])

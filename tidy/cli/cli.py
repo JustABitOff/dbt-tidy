@@ -6,7 +6,7 @@ import sys
 import click
 
 from tidy.manifest import ManifestWrapper
-from tidy.sweeps.base import CheckResult
+from tidy.sweeps.base import CheckResult, CheckStatus
 
 DEFAULT_CHECKS_PATH = importlib.resources.files(importlib.import_module("tidy.sweeps"))
 USER_CHECKS_PATH = pathlib.Path.cwd() / ".tidy"
@@ -110,10 +110,14 @@ def sweep(
     click.secho("Sweeping...", fg="cyan", bold=True)
     results = discover_and_run_checks(manifest, sweeps)
 
+    _fail = False
+
     for result in results:
-        status_color = {"pass": "green", "fail": "red", "warning": "yellow"}.get(
-            result.status.value, "white"
-        )
+        status_color = {
+            CheckStatus.PASS: "green",
+            CheckStatus.FAIL: "red",
+            CheckStatus.WARNING: "yellow",
+        }.get(result.status.value, "white")
 
         click.secho(f"\n{result.name}", fg="cyan", bold=True)
         click.secho(f"Status: {result.status.value}", fg=status_color)
@@ -129,6 +133,13 @@ def sweep(
                 click.secho(
                     f"  ...and {len(result.nodes) - max_details} more", fg="yellow"
                 )
+
+        if result.status.value == CheckStatus.FAIL:
+            _fail = True
+
+    if _fail:
+        click.secho("\nSome checks failed!", fg="red", bold=True)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

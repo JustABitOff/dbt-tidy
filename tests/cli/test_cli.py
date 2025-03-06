@@ -16,7 +16,12 @@ def mock_manifest():
 
 @pytest.fixture
 def mock_check_result():
-    return CheckResult(name="test_check", status=CheckStatus.FAIL, nodes=["node_1"], resolution="resolve this.")
+    return CheckResult(
+        name="test_check",
+        status=CheckStatus.FAIL,
+        nodes=["node_1"],
+        resolution="resolve this.",
+    )
 
 
 @patch("tidy.cli.cli.importlib.util.spec_from_file_location")
@@ -109,8 +114,8 @@ def test_cli_sweep_command(
     mock_discover_and_run_checks.return_value = [mock_check_result]
 
     result = runner.invoke(cli, ["sweep", "--manifest-path", "target/manifest.json"])
-    
-    assert result.exit_code == 0
+
+    assert result.exit_code == 1
     assert "Sweeping..." in result.output
     assert "test_check" in result.output
     assert "Status: fail" in result.output

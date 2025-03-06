@@ -10,8 +10,9 @@ def multiple_sources_joined(manifest: ManifestType) -> list:
 
     for node in manifest.nodes.values():
         if (
-            node.resource_type == "model" 
-            and Counter(s.startswith("source.") for s in node.depends_on.nodes)[True] > 1
+            node.resource_type == "model"
+            and Counter(s.startswith("source.") for s in node.depends_on.nodes)[True]
+            > 1
         ):
             failures.append(f"{node.unique_id}")
 

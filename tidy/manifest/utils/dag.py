@@ -1,11 +1,11 @@
 import networkx as nx
 
-from tidy.manifest.utils.types import ManifestType 
+from tidy.manifest.utils.types import ManifestType
 
 
 def build_dbt_graph_from_manifest(manifest: "ManifestType") -> nx.DiGraph:
     """Constructs a DAG from dbt manifest.json using the parent_map field."""
-    
+
     DG = nx.DiGraph()
 
     all_nodes = set(manifest.parent_map.keys())
@@ -22,16 +22,21 @@ def build_dbt_graph_from_manifest(manifest: "ManifestType") -> nx.DiGraph:
 
 def get_ancestors(graph: nx.DiGraph, node: str) -> list[tuple[str, int]]:
     """
-    Returns a list of tuples where each tuple contains an ancestor node and 
+    Returns a list of tuples where each tuple contains an ancestor node and
     the level of separation (shortest path length) from the ancestor to the given node.
     """
-    return [(ancestor, nx.shortest_path_length(graph, ancestor, node)) for ancestor in nx.ancestors(graph, node)]
-
+    return [
+        (ancestor, nx.shortest_path_length(graph, ancestor, node))
+        for ancestor in nx.ancestors(graph, node)
+    ]
 
 
 def get_descendants(graph: nx.DiGraph, node: str) -> list[tuple[str, int]]:
     """
-    Returns a list of tuples where each tuple contains an ancestor node and 
+    Returns a list of tuples where each tuple contains an ancestor node and
     the level of separation (shortest path length) from the ancestor to the given node.
     """
-    return [(descendant, nx.shortest_path_length(graph, descendant, node)) for descendant in nx.descendants(graph, node)]
+    return [
+        (descendant, nx.shortest_path_length(graph, descendant, node))
+        for descendant in nx.descendants(graph, node)
+    ]

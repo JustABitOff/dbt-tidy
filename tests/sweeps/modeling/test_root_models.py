@@ -6,27 +6,21 @@ from tidy.manifest.v10.nodes.models.model import (
 from tidy.manifest.v10.bases.depends_on import (
     DependsOn as DependsOnV10,
 )
-from tidy.manifest.v10.bases.file_hash import (
-    FileHash as FileHashV10
-)
+from tidy.manifest.v10.bases.file_hash import FileHash as FileHashV10
 from tidy.manifest.v11.nodes.models.model import (
     Model as ModelV11,
 )
 from tidy.manifest.v11.bases.depends_on import (
     DependsOn as DependsOnV11,
 )
-from tidy.manifest.v11.bases.file_hash import (
-    FileHash as FileHashV11
-)
+from tidy.manifest.v11.bases.file_hash import FileHash as FileHashV11
 from tidy.manifest.v12.nodes.models.model import (
     Model as ModelV12,
 )
 from tidy.manifest.v12.bases.depends_on import (
     DependsOn as DependsOnV12,
 )
-from tidy.manifest.v12.bases.file_hash import (
-    FileHash as FileHashV12
-)
+from tidy.manifest.v12.bases.file_hash import FileHash as FileHashV12
 from tidy.sweeps.base import CheckResult, CheckStatus
 from tidy.sweeps.modeling.root_models import root_models
 
@@ -49,9 +43,7 @@ def test_manifest_v10_root_models_fail():
                     name="",
                     checksum="",
                 ),
-                depends_on=DependsOnV10(
-                    nodes=[]
-                ),
+                depends_on=DependsOnV10(nodes=[]),
             )
         }
     )
@@ -124,9 +116,7 @@ def test_manifest_v11_root_models_fail():
                     name="",
                     checksum="",
                 ),
-                depends_on=DependsOnV11(
-                    nodes=[]
-                ),
+                depends_on=DependsOnV11(nodes=[]),
             )
         }
     )
@@ -199,9 +189,7 @@ def test_manifest_v12_root_models_fail():
                     name="",
                     checksum="",
                 ),
-                depends_on=DependsOnV12(
-                    nodes=[]
-                ),
+                depends_on=DependsOnV12(nodes=[]),
             )
         }
     )

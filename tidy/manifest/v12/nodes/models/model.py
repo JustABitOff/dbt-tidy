@@ -97,17 +97,15 @@ class Model(BaseModel):
 
         return find_config_call(ast)
 
-
     @computed_field(repr=False)
     @cached_property
     def ancestors(self) -> Optional[List]:
         return build_dbt_graph_from_manifest(self)
 
 
-
 def build_dbt_graph_from_manifest(manifest) -> nx.DiGraph:
     """Constructs a DAG from dbt manifest.json using the depends_on field."""
-    
+
     G = nx.DiGraph()
 
     # Add nodes

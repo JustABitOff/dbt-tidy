@@ -54,7 +54,7 @@ def discover_and_run_checks(manifest, check_names=None):
                 .as_posix()
                 .replace("/", ".")
             )
-            
+
             if check_names and module_name.split(".")[-1] not in check_names:
                 continue
 
@@ -64,7 +64,7 @@ def discover_and_run_checks(manifest, check_names=None):
                 attr = getattr(module, attr_name)
                 if callable(attr) and getattr(attr, "__is_sweep__", False):
                     check_name = getattr(attr, "__sweep_name__", attr_name)
-                    
+
                     if check_names and check_name not in check_names:
                         continue
 

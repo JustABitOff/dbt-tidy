@@ -14,6 +14,5 @@ def model_fanout(manifest: ManifestType) -> list:
             and Counter(s.startswith("model.") for s in value)[True] > 3
         ):
             failures.append(f"{key}")
-    
+
     return failures
-            

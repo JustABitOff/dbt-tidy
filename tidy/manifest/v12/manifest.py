@@ -120,10 +120,8 @@ class ManifestV12(BaseModel):
     def dag(self) -> DiGraph:
         return build_dbt_graph_from_manifest(self)
 
-
     def ancestors(self, dbt_unique_id: str) -> list[tuple[str, int]]:
         return get_ancestors(self.dag, node=dbt_unique_id)
-
 
     def descendants(self, dbt_unique_id: str) -> dict[str, int]:
         return get_descendants(self.dag, node=dbt_unique_id)

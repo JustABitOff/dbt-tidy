@@ -25,6 +25,7 @@ def test_model_fanout_fail():
         name=model_fanout.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=["model.mock_package.mock_parent_node"],
+        resolution=model_fanout.__resolution__,
     )
 
     assert result == expected

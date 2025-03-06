@@ -54,6 +54,7 @@ def test_manifest_v10_root_models_fail():
         name=root_models.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=root_models.__resolution__,
     )
 
     assert result == expected
@@ -127,6 +128,7 @@ def test_manifest_v11_root_models_fail():
         name=root_models.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=root_models.__resolution__,
     )
 
     assert result == expected
@@ -200,6 +202,7 @@ def test_manifest_v12_root_models_fail():
         name=root_models.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=root_models.__resolution__,
     )
 
     assert result == expected

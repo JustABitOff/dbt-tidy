@@ -58,6 +58,7 @@ def test_v10_manifest_duplicate_sources_fail():
             mock_manifest.sources.get("source_one").unique_id,
             mock_manifest.sources.get("source_two").unique_id,
         ],
+        resolution=duplicate_sources.__resolution__,
     )
 
     assert result == expected
@@ -155,6 +156,7 @@ def test_v11_manifest_duplicate_sources_fail():
             mock_manifest.sources.get("source_one").unique_id,
             mock_manifest.sources.get("source_two").unique_id,
         ],
+        resolution=duplicate_sources.__resolution__,
     )
 
     assert result == expected
@@ -252,6 +254,7 @@ def test_v12_manifest_duplicate_sources_fail():
             mock_manifest.sources.get("source_one").unique_id,
             mock_manifest.sources.get("source_two").unique_id,
         ],
+        resolution=duplicate_sources.__resolution__,
     )
 
     assert result == expected

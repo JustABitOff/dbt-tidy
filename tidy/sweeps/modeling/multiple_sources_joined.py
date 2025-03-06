@@ -4,7 +4,10 @@ from tidy.sweeps.base import sweep
 from tidy.manifest.utils.types import ManifestType
 
 
-@sweep("Multiple Sources Joined")
+@sweep(
+    name="Multiple Sources Joined",
+    resolution="Ensure that each source has it's own staging model, and that down stream models reference the staging model instead of the source.",
+)
 def multiple_sources_joined(manifest: ManifestType) -> list:
     failures = []
 

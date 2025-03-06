@@ -2,7 +2,10 @@ from tidy.sweeps.base import sweep
 from tidy.manifest.utils.types import ManifestType
 
 
-@sweep("Root Models")
+@sweep(
+    name="Root Models",
+    resolution="""Ensure that models use the {{ source() }} or {{ ref() }} functions.""",
+)
 def root_models(manifest: ManifestType) -> list:
     failures = []
     for node in manifest.nodes.values():

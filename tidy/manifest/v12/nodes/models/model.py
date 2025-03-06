@@ -1,7 +1,10 @@
 from typing import Optional, Literal, List, Dict, Any, Union
 
+from functools import cached_property
+
 from jinja2 import Environment, nodes
 from pydantic import BaseModel, ConfigDict, Field, computed_field
+import networkx as nx
 
 from tidy.manifest.v12.bases.file_hash import FileHash
 from tidy.manifest.v12.bases.column_info import ColumnInfo
@@ -93,3 +96,30 @@ class Model(BaseModel):
             return None
 
         return find_config_call(ast)
+
+
+    @computed_field(repr=False)
+    @cached_property
+    def ancestors(self) -> Optional[List]:
+        return build_dbt_graph_from_manifest(self)
+
+
+
+def build_dbt_graph_from_manifest(manifest) -> nx.DiGraph:
+    """Constructs a DAG from dbt manifest.json using the depends_on field."""
+    
+    G = nx.DiGraph()
+
+    # Add nodes
+    for unique_id, node in manifest.nodes.items():
+        G.add_node(unique_id, name=node.name)
+
+    # Add edges based on `depends_on.nodes` (parent → child)
+    for unique_id, node in manifest.nodes.items():
+        # breakpoint()
+        if hasattr(node.depends_on, "nodes"):
+            for parent_id in node.depends_on.nodes:
+                if parent_id in manifest.nodes:  # Ensure parent exists in manifest
+                    G.add_edge(parent_id, unique_id)
+
+    return G

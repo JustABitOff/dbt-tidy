@@ -1,4 +1,4 @@
-from tidy.manifest.types import ManifestType
+from tidy.manifest.utils.types import ManifestType
 from tidy.sweeps.base import sweep, CheckResult, CheckStatus
 
 

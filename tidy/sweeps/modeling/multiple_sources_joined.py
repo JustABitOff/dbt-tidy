@@ -1,7 +1,7 @@
 from collections import Counter
 
 from tidy.sweeps.base import sweep
-from tidy.manifest.types import ManifestType
+from tidy.manifest.utils.types import ManifestType
 
 
 @sweep("Multiple Sources Joined")

@@ -5,7 +5,7 @@ from typing import Callable
 
 from pydantic import BaseModel
 
-from tidy.manifest.types import ManifestType
+from tidy.manifest.utils.types import ManifestType
 
 
 class CheckStatus(StrEnum):

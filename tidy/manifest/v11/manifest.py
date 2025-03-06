@@ -1,7 +1,14 @@
+from functools import cached_property
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field
+from networkx import DiGraph
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
+from tidy.manifest.utils.dag import (
+    build_dbt_graph_from_manifest,
+    get_ancestors,
+    get_descendants,
+)
 from tidy.manifest.v11.metadata.metadata import ManifestMetadata
 from tidy.manifest.v11.nodes.seeds.seed import SeedNode
 from tidy.manifest.v11.nodes.analysis.analysis import Analysis
@@ -25,6 +32,7 @@ from tidy.manifest.v11.semantic_models.semantic_model import SemanticModel
 class ManifestV11(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
+        arbitrary_types_allowed=True,
     )
     metadata: ManifestMetadata = Field(
         ..., description="Metadata about the manifest", title="ManifestMetadata"
@@ -104,3 +112,14 @@ class ManifestV11(BaseModel):
     semantic_models: Dict[str, SemanticModel] = Field(
         ..., description="The semantic models defined in the dbt project"
     )
+
+    @computed_field(repr=False)
+    @cached_property
+    def dag(self) -> DiGraph:
+        return build_dbt_graph_from_manifest(self)
+
+    def ancestors(self, dbt_unique_id: str) -> list[tuple[str, int]]:
+        return get_ancestors(self.dag, node=dbt_unique_id)
+
+    def descendants(self, dbt_unique_id: str) -> dict[str, int]:
+        return get_descendants(self.dag, node=dbt_unique_id)

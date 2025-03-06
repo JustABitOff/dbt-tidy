@@ -38,7 +38,7 @@ def test_model_fanout_pass():
                 "test.child_two",
                 "test.child_three",
                 "model.child_one",
-                "model.child_two"
+                "model.child_two",
             ]
         }
     )

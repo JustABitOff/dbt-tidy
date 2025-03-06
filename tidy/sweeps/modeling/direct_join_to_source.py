@@ -1,5 +1,5 @@
 from tidy.sweeps.base import sweep
-from tidy.manifest.types import ManifestType
+from tidy.manifest.utils.types import ManifestType
 
 
 @sweep("Direct Join to Source")

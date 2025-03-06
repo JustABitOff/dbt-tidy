@@ -1,7 +1,7 @@
 from collections import Counter
 
 from tidy.sweeps.base import sweep
-from tidy.manifest.types import ManifestType
+from tidy.manifest.utils.types import ManifestType
 
 
 @sweep("Model Fanout")
@@ -14,6 +14,5 @@ def model_fanout(manifest: ManifestType) -> list:
             and Counter(s.startswith("model.") for s in value)[True] > 3
         ):
             failures.append(f"{key}")
-    
+
     return failures
-            

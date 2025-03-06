@@ -117,6 +117,8 @@ def sweep(
 
         click.secho(f"\n{result.name}", fg="cyan", bold=True)
         click.secho(f"Status: {result.status.value}", fg=status_color)
+        if result.resolution:
+            click.secho(f"Resolution: {result.resolution}", fg="magenta")
 
         if result.nodes:
             click.secho("Nodes:", fg="blue")

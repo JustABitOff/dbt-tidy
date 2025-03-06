@@ -4,7 +4,10 @@ from tidy.sweeps.base import sweep
 from tidy.manifest.utils.types import ManifestType
 
 
-@sweep("Duplicate Sources")
+@sweep(
+    name="Duplicate Sources",
+    resolution="Ensure that no more than one source definition points to an object in your database.",
+)
 def duplicate_sources(manifest: ManifestType) -> list:
     failures = []
 

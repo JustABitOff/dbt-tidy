@@ -4,7 +4,10 @@ from tidy.sweeps.base import sweep
 from tidy.manifest.utils.types import ManifestType
 
 
-@sweep("Model Fanout")
+@sweep(
+    name="Model Fanout",
+    resolution="Ensure that models do not have more than 3 direct children.",
+)
 def model_fanout(manifest: ManifestType) -> list:
     failures = []
 

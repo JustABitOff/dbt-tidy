@@ -2,7 +2,10 @@ from tidy.sweeps.base import sweep
 from tidy.manifest.utils.types import ManifestType
 
 
-@sweep("Direct Join to Source")
+@sweep(
+    name="Direct Join to Source",
+    resolution="Read from the staging model instead of the source.",
+)
 def direct_join_to_source(manifest: ManifestType) -> list:
     failures = []
 

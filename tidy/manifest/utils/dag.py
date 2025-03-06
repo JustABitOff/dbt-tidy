@@ -37,6 +37,6 @@ def get_descendants(graph: nx.DiGraph, node: str) -> list[tuple[str, int]]:
     the level of separation (shortest path length) from the ancestor to the given node.
     """
     return [
-        (descendant, nx.shortest_path_length(graph, descendant, node))
+        (descendant, nx.shortest_path_length(graph, node, descendant))
         for descendant in nx.descendants(graph, node)
     ]

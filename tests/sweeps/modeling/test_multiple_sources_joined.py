@@ -59,6 +59,7 @@ def test_manifest_v10_multiple_sources_joined_fail():
         name=multiple_sources_joined.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=multiple_sources_joined.__resolution__,
     )
 
     assert result == expected
@@ -136,6 +137,7 @@ def test_manifest_v11_multiple_sources_joined_fail():
         name=multiple_sources_joined.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=multiple_sources_joined.__resolution__,
     )
 
     assert result == expected
@@ -213,6 +215,7 @@ def test_manifest_v12_multiple_sources_joined_fail():
         name=multiple_sources_joined.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=multiple_sources_joined.__resolution__,
     )
 
     assert result == expected

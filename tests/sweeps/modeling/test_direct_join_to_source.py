@@ -54,11 +54,12 @@ def test_manifest_v10_direct_join_to_source_fail():
     )
 
     result = direct_join_to_source(mock_manifest)
-
+    
     expected = CheckResult(
         name=direct_join_to_source.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=direct_join_to_source.__resolution__,
     )
 
     assert result == expected
@@ -93,7 +94,7 @@ def test_manifest_v10_direct_join_to_source_pass():
     )
 
     result = direct_join_to_source(mock_manifest)
-
+    
     expected = CheckResult(
         name=direct_join_to_source.__sweep_name__,
         status=CheckStatus.PASS,
@@ -137,6 +138,7 @@ def test_manifest_v11_direct_join_to_source_fail():
         name=direct_join_to_source.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=direct_join_to_source.__resolution__,
     )
 
     assert result == expected
@@ -215,6 +217,7 @@ def test_manifest_v12_direct_join_to_source_fail():
         name=direct_join_to_source.__sweep_name__,
         status=CheckStatus.FAIL,
         nodes=[mock_manifest.nodes.get("node_one").unique_id],
+        resolution=direct_join_to_source.__resolution__,
     )
 
     assert result == expected

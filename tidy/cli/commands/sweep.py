@@ -7,6 +7,7 @@ import sys
 import click
 
 from tidy.cli.options import OptionEatAll
+from tidy.config.tidy_config import TidyConfig
 from tidy.manifest import ManifestWrapper
 from tidy.sweeps.base import CheckResult, CheckStatus
 
@@ -17,8 +18,6 @@ USER_CHECKS_PATH = pathlib.Path.cwd() / ".tidy"
 @click.command()
 @click.option(
     "--manifest-path",
-    default="target/manifest.json",
-    show_default=True,
     help="Path to the dbt manifest file.",
 )
 @click.option(
@@ -49,8 +48,7 @@ def sweep(
     output_failures,
     sweeps,
 ):
-    ctx.ensure_object(dict)
-    ctx.obj["manifest"] = ManifestWrapper.load(manifest_path)
+    _set_context()
 
     click.secho("Sweeping...", fg="cyan", bold=True)
     results = _discover_and_run_checks()
@@ -91,6 +89,23 @@ def sweep(
 
     if failures:
         _handle_failure(failures=failures)
+
+
+@click.pass_context
+def _set_context(ctx):
+    ctx.ensure_object(dict)
+
+    config = TidyConfig()
+
+    if ctx.params["sweeps"]:
+        config.mode = "include"
+        config.sweeps = list(ctx.params["sweeps"])
+
+    if ctx.params["manifest_path"]:
+        config.manifest_path = ctx.params["manifest_path"]
+
+    ctx.obj["tidy_config"] = config
+    ctx.obj["manifest"] = ManifestWrapper.load(config.manifest_path)
 
 
 @click.pass_context

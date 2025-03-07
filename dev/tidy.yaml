@@ -1,4 +1,5 @@
 custom_sweeps_path: .tidy
+manifest_path: target/manifest.json
 mode: include
 sweeps:
   - root_models

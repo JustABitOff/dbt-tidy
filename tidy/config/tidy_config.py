@@ -11,7 +11,8 @@ class TidyConfig(BaseModel):
         extra="forbid",
     )
 
-    custom_sweeps_path: Path = Path(".tidy")
+    custom_sweeps_path: Path = Path("./.tidy")
+    manifest_path: Path = Path("./target/manifest.json")
     mode: Literal["all", "include", "exclude"] = "all"
     sweeps: Optional[List[str]] = Field(default_factory=list)
 
@@ -19,8 +20,7 @@ class TidyConfig(BaseModel):
     @classmethod
     def load_from_yaml(cls, values) -> "TidyConfig":
         if not TIDY_CONFIG_PATH.exists():
-            message = "Error: `tidy.yaml` not found."
-            raise FileNotFoundError(message)
+            return values
         
         if not values:
             try:

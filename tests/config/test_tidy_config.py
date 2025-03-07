@@ -15,14 +15,19 @@ def mock_tidy_yaml():
 def yaml_content():
     return {
         "custom_sweeps_path": ".mock_custom_path",
+        "manifest_path" : "mock/manifest.json",
         "mode": "include",
         "sweeps": ["a", "b"],
     }
 
 @patch("pathlib.Path.exists", return_value=False)
 def test_loads_default_values(mock_path_exists, mock_tidy_yaml):
-    with pytest.raises(FileNotFoundError, match="Error: `tidy.yaml` not found."):
-        TidyConfig()
+    result = TidyConfig()
+
+    result.custom_sweeps_path = Path("./.tidy")
+    result.manifest_path = Path("./target/manifest.json")
+    result.mode = "all"
+    result.sweeps = []
 
 
 @patch("tidy.config.tidy_config.Path.read_text")
@@ -36,11 +41,13 @@ def test_loads_valid_yaml(mock_exists, mock_yaml_safe_load, mock_read_text, mock
     assert config.mode == "include"
     assert config.sweeps == ["a", "b"]
     assert config.custom_sweeps_path == Path(".mock_custom_path")
+    assert config.manifest_path == Path("mock/manifest.json")
 
 
+@patch("tidy.config.tidy_config.Path.read_text")
 @patch("pathlib.Path.exists", return_value=True)
 @patch("yaml.safe_load", side_effect=yaml.YAMLError("Invalid YAML"))
-def test_invalid_yaml_format(mock_safe_load, mock_exists):
+def test_invalid_yaml_format(mock_safe_load, mock_exists, mock_read_text):
     with pytest.raises(ValueError):
         TidyConfig()
 

@@ -1,4 +1,5 @@
 import importlib
+import json
 import pkgutil
 import pathlib
 import sys
@@ -100,17 +101,24 @@ def cli():
     multiple=True,
     help="List of check names to run. If not specified, all checks will be run.",
 )
+@click.option(
+    "--output-failures",
+    "-o",
+    type=click.Path(path_type=pathlib.Path),
+    help="Path to save failures in JSON format. If not specified, no file is written.",
+)
 def sweep(
     manifest_path,
     max_details,
     sweeps,
+    output_failures,
 ):
     manifest = ManifestWrapper.load(manifest_path)
 
     click.secho("Sweeping...", fg="cyan", bold=True)
     results = discover_and_run_checks(manifest, sweeps)
 
-    _fail = False
+    failures = []
 
     for result in results:
         status_color = {
@@ -135,11 +143,31 @@ def sweep(
                 )
 
         if result.status.value == CheckStatus.FAIL:
-            _fail = True
+            failures.append(
+                {
+                    "check_name": result.name,
+                    "status": result.status.value,
+                    "nodes": result.nodes,
+                    "resolution": result.resolution,
+                }
+            )
 
-    if _fail:
-        click.secho("\nSome checks failed!", fg="red", bold=True)
-        sys.exit(1)
+    if failures:
+        _handle_failure(failures=failures, output_failures=output_failures)
+
+
+def _handle_failure(failures: list[dict], output_failures: pathlib.Path):
+    if output_failures:
+        if output_failures.is_dir():
+            output_file = output_failures / "tidy_failures.json"
+        else:
+            output_file = output_failures
+
+        with output_file.open("w") as f:
+            json.dump(failures, f, indent=4)
+
+    click.secho("\nSome checks failed!", fg="red", bold=True)
+    sys.exit(1)
 
 
 if __name__ == "__main__":

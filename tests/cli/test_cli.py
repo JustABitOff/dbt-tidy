@@ -47,17 +47,17 @@ def test_discover_and_run_checks(mock_files, mock_walk_packages, mock_import_mod
 
     mock_walk_packages.return_value = [(None, "tidy.sweeps", False)]
 
-    @sweep("builtin_check")
-    def mock_sweep(manifest):
+    @sweep("Builtin Check")
+    def builtin_check(manifest):
         return ["node_1"]
 
-    @sweep("builtin_check_two")
-    def mock_sweep_two(manifest):
+    @sweep("Builtin Check Two")
+    def builtin_check_two(manifest):
         return ["node_1"]
 
     mock_module = types.ModuleType("mock_builtin_module")
-    setattr(mock_module, "builtin_check", mock_sweep)
-    setattr(mock_module, "builtin_check_two", mock_sweep_two)
+    setattr(mock_module, "builtin_check", builtin_check)
+    setattr(mock_module, "builtin_check_two", builtin_check_two)
 
     mock_import_module.return_value = mock_module
 
@@ -68,10 +68,10 @@ def test_discover_and_run_checks(mock_files, mock_walk_packages, mock_import_mod
     mock_import_module.assert_called_with("tidy.sweeps")
 
     assert len(results) == 2
-    assert results[0].name == "builtin_check"
+    assert results[0].name == "Builtin Check"
     assert results[0].status == CheckStatus.FAIL
     assert results[0].nodes == ["node_1"]
-    assert results[1].name == "builtin_check_two"
+    assert results[1].name == "Builtin Check Two"
     assert results[1].status == CheckStatus.FAIL
     assert results[1].nodes == ["node_1"]
 
@@ -93,8 +93,8 @@ def test_discover_and_run_checks_with_user_checks(
     setattr(mock_module, "user_check", mock_sweep)
     mock_import_module_from_path.return_value = mock_module
 
-    results = discover_and_run_checks(mock_manifest, check_names=["user_check"])
-
+    results = discover_and_run_checks(mock_manifest, check_names=["mock_sweep"])
+    
     mock_import_module_from_path.assert_called_with(
         "user_check", pathlib.Path("/mocked/path/.tidy/user_check.py")
     )
@@ -104,13 +104,11 @@ def test_discover_and_run_checks_with_user_checks(
     assert results[0].nodes == ["node_1"]
 
 
-@patch("pathlib.Path.open", new_callable=mock_open)
 @patch("tidy.cli.cli.discover_and_run_checks")
 @patch("tidy.cli.cli.ManifestWrapper.load")
 def test_cli_sweep_command(
     mock_manifest_load,
     mock_discover_and_run_checks,
-    mock_json_write,
     mock_manifest,
     mock_check_result,
 ):
@@ -119,7 +117,7 @@ def test_cli_sweep_command(
     mock_discover_and_run_checks.return_value = [mock_check_result]
 
     result = runner.invoke(
-        cli, ["sweep", "--manifest-path", "target/manifest.json", "--output-json", "."]
+        cli, ["sweep", "--manifest-path", "target/manifest.json"]
     )
 
     assert result.exit_code == 1
@@ -145,7 +143,7 @@ def test_cli_sweep_command_output_file(
     mock_manifest_load.return_value = mock_manifest
     mock_discover_and_run_checks.return_value = [mock_check_result]
 
-    result = runner.invoke(cli, ["sweep", "--output-json", "./test_fails.json"])
+    result = runner.invoke(cli, ["sweep", "--output-failures", "./test_fails.json"])
 
     mock_json_write.assert_called_once()
     assert result.exit_code == 1

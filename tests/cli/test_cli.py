@@ -108,19 +108,18 @@ def test_discover_and_run_checks_with_user_checks(
 @patch("tidy.cli.cli.discover_and_run_checks")
 @patch("tidy.cli.cli.ManifestWrapper.load")
 def test_cli_sweep_command(
-    mock_manifest_load, mock_discover_and_run_checks, mock_json_write, mock_manifest, mock_check_result
+    mock_manifest_load,
+    mock_discover_and_run_checks,
+    mock_json_write,
+    mock_manifest,
+    mock_check_result,
 ):
     runner = click.testing.CliRunner()
     mock_manifest_load.return_value = mock_manifest
     mock_discover_and_run_checks.return_value = [mock_check_result]
 
-    result = runner.invoke(cli, [
-        "sweep", 
-        "--manifest-path", 
-        "target/manifest.json",
-        "--output-json",
-        "."
-        ]
+    result = runner.invoke(
+        cli, ["sweep", "--manifest-path", "target/manifest.json", "--output-json", "."]
     )
 
     assert result.exit_code == 1
@@ -136,18 +135,17 @@ def test_cli_sweep_command(
 @patch("tidy.cli.cli.discover_and_run_checks")
 @patch("tidy.cli.cli.ManifestWrapper.load")
 def test_cli_sweep_command_output_file(
-    mock_manifest_load, mock_discover_and_run_checks, mock_json_write, mock_manifest, mock_check_result
+    mock_manifest_load,
+    mock_discover_and_run_checks,
+    mock_json_write,
+    mock_manifest,
+    mock_check_result,
 ):
     runner = click.testing.CliRunner()
     mock_manifest_load.return_value = mock_manifest
     mock_discover_and_run_checks.return_value = [mock_check_result]
 
-    result = runner.invoke(cli, [
-        "sweep", 
-        "--output-json",
-        "./test_fails.json"
-        ]
-    )
+    result = runner.invoke(cli, ["sweep", "--output-json", "./test_fails.json"])
 
     mock_json_write.assert_called_once()
     assert result.exit_code == 1

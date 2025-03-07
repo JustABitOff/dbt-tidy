@@ -143,12 +143,14 @@ def sweep(
                 )
 
         if result.status.value == CheckStatus.FAIL:
-            failures.append({
-                "check_name": result.name,
-                "status": result.status.value,
-                "nodes": result.nodes,
-                "resolution": result.resolution,
-            })
+            failures.append(
+                {
+                    "check_name": result.name,
+                    "status": result.status.value,
+                    "nodes": result.nodes,
+                    "resolution": result.resolution,
+                }
+            )
 
     if failures:
         _handle_failure(failures=failures, output_failures=output_failures)

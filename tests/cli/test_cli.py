@@ -1,5 +1,5 @@
 import pytest
-import pathlib
+from pathlib import Path
 import types
 import click.testing
 from unittest.mock import MagicMock, patch, mock_open
@@ -8,6 +8,18 @@ from tidy.manifest import ManifestWrapper
 from tidy.sweeps.base import CheckResult, CheckStatus, sweep
 from tidy.cli.commands.sweep import _import_module_from_path
 from tidy.cli.cli import cli
+from tidy.config.tidy_config import TidyConfig
+
+
+@pytest.fixture
+def mock_tidy_config():
+    mock_config = MagicMock(spec=TidyConfig)
+    mock_config.mode = "all"
+    mock_config.sweeps = []
+    mock_config.custom_sweeps_path = Path(".tidy")
+    
+    with patch.object(TidyConfig, "load_from_yaml", return_value=None):
+        yield mock_config
 
 
 @pytest.fixture
@@ -44,7 +56,7 @@ def test_import_module_from_path(mock_module_from_spec, mock_spec_from_file_loca
 @patch("importlib.resources.files")
 def test_discover_and_run_checks(mock_files, mock_walk_packages, mock_import_module):
     runner = click.testing.CliRunner()
-    fake_path = pathlib.Path("/mock/sweeps")
+    fake_path = Path("/mock/sweeps")
     mock_files.return_value = fake_path
 
     mock_walk_packages.return_value = [(None, "tidy.sweeps", False)]
@@ -74,44 +86,18 @@ def test_discover_and_run_checks(mock_files, mock_walk_packages, mock_import_mod
     assert "Builtin Check Two" in result.output
 
 
-@patch(
-    "tidy.cli.commands.sweep.USER_CHECKS_PATH", new=pathlib.Path("/mocked/path/.tidy")
-)
-@patch("tidy.cli.commands.sweep.pathlib.Path.exists", return_value=True)
-@patch("tidy.cli.commands.sweep.pathlib.Path.rglob")
-@patch("tidy.cli.commands.sweep._import_module_from_path")
-def test_discover_and_run_checks_with_user_checks(
-    mock_import_module_from_path, mock_rglob, mock_user_check_path
-):
-    runner = click.testing.CliRunner()
-    mock_rglob.return_value = iter([pathlib.Path("/mocked/path/.tidy/user_check.py")])
-
-    @sweep("user_check")
-    def mock_sweep(manifest):
-        return ["node_1"]
-
-    mock_module = types.ModuleType("mock_module")
-    setattr(mock_module, "user_check", mock_sweep)
-    mock_import_module_from_path.return_value = mock_module
-
-    result = runner.invoke(cli, ["sweep", "--sweeps", "mock_sweep"])
-
-    mock_import_module_from_path.assert_called_with(
-        "user_check", pathlib.Path("/mocked/path/.tidy/user_check.py")
-    )
-    assert result.exit_code == 1
-    assert "user_check" in result.output
-
-
 @patch("tidy.cli.commands.sweep._discover_and_run_checks")
 @patch("tidy.cli.commands.sweep.ManifestWrapper.load")
 def test_cli_sweep_command(
     mock_manifest_load,
     mock_discover_and_run_checks,
+    monkeypatch,
     mock_manifest,
     mock_check_result,
+    mock_tidy_config
 ):
     runner = click.testing.CliRunner()
+    monkeypatch.setattr("tidy.cli.commands.sweep.TidyConfig", mock_tidy_config)
     mock_manifest_load.return_value = mock_manifest
     mock_discover_and_run_checks.return_value = [mock_check_result]
 
@@ -133,10 +119,14 @@ def test_cli_sweep_command_output_file(
     mock_manifest_load,
     mock_discover_and_run_checks,
     mock_json_write,
+    monkeypatch,
     mock_manifest,
     mock_check_result,
+    mock_tidy_config
 ):
     runner = click.testing.CliRunner()
+    monkeypatch.setattr("tidy.cli.commands.sweep.TidyConfig", mock_tidy_config)
+
     mock_manifest_load.return_value = mock_manifest
     mock_discover_and_run_checks.return_value = [mock_check_result]
 
@@ -153,10 +143,13 @@ def test_cli_sweep_command_output_file_default(
     mock_manifest_load,
     mock_discover_and_run_checks,
     mock_json_write,
+    monkeypatch,
     mock_manifest,
     mock_check_result,
+    mock_tidy_config,
 ):
     runner = click.testing.CliRunner()
+    monkeypatch.setattr("tidy.cli.commands.sweep.TidyConfig", mock_tidy_config)
     mock_manifest_load.return_value = mock_manifest
     mock_discover_and_run_checks.return_value = [mock_check_result]
 

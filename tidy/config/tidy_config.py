@@ -5,13 +5,15 @@ import yaml
 
 from tidy.config.constants import TIDY_CONFIG_PATH
 
-
+# TODO: Validate custom sweeps path
+# TODO: Validate manifest path
+# TODO: Validate sweeps is an empty list if mode == 'all'
 class TidyConfig(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
 
-    custom_sweeps_path: Path = Path("./.tidy")
+    custom_sweeps_path: Path = Path.cwd() / ".tidy"
     manifest_path: Path = Path("./target/manifest.json")
     mode: Literal["all", "include", "exclude"] = "all"
     sweeps: Optional[List[str]] = Field(default_factory=list)

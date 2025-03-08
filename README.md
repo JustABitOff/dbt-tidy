@@ -80,7 +80,7 @@ It is as easy as:
 1.	Create a directory for your sweeps. By default, `dbt-tidy` will look for custom sweeps in `./.tidy`, but you can override this in the `tidy.yaml` file.
 2.	Create a `sweep` decorated function which returns a list of dbt unique ids.
 
-The `@sweep` decorator will provide you with the `manifest` for your dbt project; represented as a Pydantic model.
+The `@sweep` decorator not only runs validation checks but also provides a fully parsed manifest of your dbt project, represented as a Pydantic model. This means you have direct access to the entire dbt manifest, including models, tests, and other configurations, in a structured and type-validated format. The power of this approach lies in how easily you can interact with and query the project metadata, enabling you to write more sophisticated custom `sweeps`.
 
 ```python
 from tidy.sweeps.base import sweep

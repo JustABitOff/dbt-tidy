@@ -57,6 +57,8 @@ dbt-tidy sweep --manifest-path ./located/here/manifest.json
 ## Configuration
 You can configure the behavior of `dbt-tidy` by creating a `tidy.yaml` file in your project root. In this file, you can specify which sweeps to enable or exclude and set project-specific settings.
 
+_The location of `tidy.yaml` can be overridden by setting the TIDY_CONFIG_PATH environment variable._
+
 ```yaml
 manifest_path: some/directory/manifest.json
 

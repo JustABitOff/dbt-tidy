@@ -1,6 +1,5 @@
 from typing import Optional, Literal, List, Dict, Any, Union
 
-from jinja2 import Environment, nodes
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from tidy.manifest.v11.bases.file_hash import FileHash
@@ -14,6 +13,7 @@ from tidy.manifest.v11.bases.defer_relation import DeferRelation
 from tidy.manifest.v11.bases.enums import Access
 from tidy.manifest.v11.nodes.models.model_config import ModelConfig
 from tidy.manifest.v11.nodes.models.model_level_constraint import ModelLevelConstraint
+from tidy.manifest.utils.config_block import get_config_block
 
 
 class Model(BaseModel):
@@ -69,22 +69,4 @@ class Model(BaseModel):
     @computed_field
     @property
     def config_block(self) -> Optional[Dict[str, Any]]:
-        env = Environment(extensions=["jinja2.ext.do"])
-        ast = env.parse(self.raw_code)
-
-        def find_config_call(node):
-            if (
-                isinstance(node, nodes.Call)
-                and isinstance(node.node, nodes.Name)
-                and node.node.name == "config"
-            ):
-                return {kw.key: kw.value.as_const() for kw in node.kwargs}
-
-            for child in node.iter_child_nodes():
-                result = find_config_call(child)
-                if result:
-                    return result
-
-            return None
-
-        return find_config_call(ast)
+        return get_config_block(self.raw_code)

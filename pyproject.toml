@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "dbt-tidy"
-version = "0.2.0"
+version = "0.3.0"
 description = "Tidy is a Python package designed to review your dbt project and enforce validation checks for project structure and standards."
 readme = "README.md"
 requires-python = ">=3.10"

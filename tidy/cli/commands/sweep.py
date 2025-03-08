@@ -1,24 +1,22 @@
 import importlib
 import json
 import pkgutil
-import pathlib
+from pathlib import Path
 import sys
 
 import click
 
 from tidy.cli.options import OptionEatAll
+from tidy.config.tidy_config import TidyConfig
 from tidy.manifest import ManifestWrapper
 from tidy.sweeps.base import CheckResult, CheckStatus
 
 DEFAULT_CHECKS_PATH = importlib.resources.files(importlib.import_module("tidy.sweeps"))
-USER_CHECKS_PATH = pathlib.Path.cwd() / ".tidy"
 
 
 @click.command()
 @click.option(
     "--manifest-path",
-    default="target/manifest.json",
-    show_default=True,
     help="Path to the dbt manifest file.",
 )
 @click.option(
@@ -31,7 +29,7 @@ USER_CHECKS_PATH = pathlib.Path.cwd() / ".tidy"
 @click.option(
     "--output-failures",
     "-o",
-    type=click.Path(path_type=pathlib.Path),
+    type=click.Path(path_type=Path),
     help="Path to save failures in JSON format. If not specified, no file is written.",
 )
 @click.option(
@@ -49,9 +47,8 @@ def sweep(
     output_failures,
     sweeps,
 ):
-    ctx.ensure_object(dict)
-    ctx.obj["manifest"] = ManifestWrapper.load(manifest_path)
-
+    _set_context()
+    
     click.secho("Sweeping...", fg="cyan", bold=True)
     results = _discover_and_run_checks()
 
@@ -94,12 +91,30 @@ def sweep(
 
 
 @click.pass_context
+def _set_context(ctx):
+    ctx.ensure_object(dict)
+
+    config = TidyConfig()
+
+    if ctx.params["sweeps"]:
+        config.mode = "include"
+        config.sweeps = list(ctx.params["sweeps"])
+
+    if ctx.params["manifest_path"]:
+        config.manifest_path = ctx.params["manifest_path"]
+    
+    ctx.obj["tidy_config"] = config
+    
+    ctx.obj["manifest"] = ManifestWrapper.load(config.manifest_path)
+
+
+@click.pass_context
 def _discover_and_run_checks(ctx):
     """Discovers and runs all available checks from both built-in and user-defined sources."""
     results = []
-
+    
     results.extend(_load_checks_from_package(str(DEFAULT_CHECKS_PATH), "tidy.sweeps."))
-    results.extend(_load_checks_from_directory(USER_CHECKS_PATH))
+    results.extend(_load_checks_from_directory(ctx.obj["tidy_config"].custom_sweeps_path))
 
     return results
 
@@ -123,7 +138,7 @@ def _load_checks_from_package(base_path: str, package_prefix: str):
     return results
 
 
-def _load_checks_from_directory(directory: pathlib.Path):
+def _load_checks_from_directory(directory: Path):
     """Dynamically loads and runs checks from a directory of Python files."""
     results = []
 
@@ -133,13 +148,14 @@ def _load_checks_from_directory(directory: pathlib.Path):
     sys.path.insert(0, str(directory))
 
     for check_file in directory.rglob("*.py"):
+        
         module_name = (
             check_file.relative_to(directory)
             .with_suffix("")
             .as_posix()
             .replace("/", ".")
         )
-
+        
         try:
             module = _import_module_from_path(module_name, check_file)
         except ImportError as e:
@@ -152,10 +168,10 @@ def _load_checks_from_directory(directory: pathlib.Path):
 
 
 @click.pass_context
-@click.pass_obj
-def _run_checks_from_module(obj, ctx, module):
+def _run_checks_from_module(ctx, module):
     """Runs all checks defined in a module."""
     results = []
+    tidy_config = ctx.obj["tidy_config"]
 
     for attr_name in dir(module):
         attr = getattr(module, attr_name)
@@ -163,10 +179,15 @@ def _run_checks_from_module(obj, ctx, module):
         if callable(attr) and getattr(attr, "__is_sweep__", False):
             sweep = getattr(attr, "__name__", attr_name)
 
-            if ctx.params["sweeps"] and sweep not in ctx.params["sweeps"]:
-                continue
+            if tidy_config.sweeps:
+                if tidy_config.mode == "include":
+                    if sweep not in tidy_config.sweeps:
+                        continue
+                elif tidy_config.mode == "exclude":
+                    if sweep in tidy_config.sweeps:
+                        continue
 
-            check_result = attr(obj["manifest"])
+            check_result = attr(ctx.obj["manifest"])
             if isinstance(check_result, CheckResult):
                 results.append(check_result)
 

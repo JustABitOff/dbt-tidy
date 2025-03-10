@@ -126,7 +126,7 @@ def _load_checks_from_package(base_path: str, package_prefix: str):
     for _, module_name, ispkg in pkgutil.walk_packages([base_path], package_prefix):
         if ispkg:
             continue
-
+        
         try:
             module = importlib.import_module(module_name)
         except ImportError as e:
@@ -172,7 +172,7 @@ def _run_checks_from_module(ctx, module):
     """Runs all checks defined in a module."""
     results = []
     tidy_config = ctx.obj["tidy_config"]
-
+    
     for attr_name in dir(module):
         attr = getattr(module, attr_name)
 
@@ -190,7 +190,7 @@ def _run_checks_from_module(ctx, module):
             check_result = attr(ctx.obj["manifest"])
             if isinstance(check_result, CheckResult):
                 results.append(check_result)
-
+    
     return results
 
 

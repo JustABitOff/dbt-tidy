@@ -49,8 +49,7 @@ def sweep(name: str, resolution: Optional[str] = None):
             failures = [
                 failure 
                 for failure in failures 
-                if len(failure.split(".")) == 3
-                and failure.split(".")[1] == manifest.metadata.project_name
+                if failure.split(".")[1] == manifest.metadata.project_name
             ]
 
             return CheckResult(

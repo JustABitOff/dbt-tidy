@@ -8,6 +8,27 @@ from tidy.sweeps.base import CheckResult, CheckStatus, sweep
 from tidy.cli.commands.sweep import _import_module_from_path
 from tidy.cli.cli import cli
 from tidy.config.tidy_config import TidyConfig
+from tidy.manifest.v10.nodes.models.model import (
+    ModelNode as ModelV10,
+)
+from tidy.manifest.v10.bases.depends_on import (
+    DependsOn as DependsOnV10,
+)
+from tidy.manifest.v10.bases.file_hash import FileHash as FileHashV10
+from tidy.manifest.v11.nodes.models.model import (
+    Model as ModelV11,
+)
+from tidy.manifest.v11.bases.depends_on import (
+    DependsOn as DependsOnV11,
+)
+from tidy.manifest.v11.bases.file_hash import FileHash as FileHashV11
+from tidy.manifest.v12.nodes.models.model import (
+    Model as ModelV12,
+)
+from tidy.manifest.v12.bases.depends_on import (
+    DependsOn as DependsOnV12,
+)
+from tidy.manifest.v12.bases.file_hash import FileHash as FileHashV12
 
 
 @pytest.fixture
@@ -22,8 +43,39 @@ def mock_tidy_config():
 
 
 @pytest.fixture
-def mock_manifest():
-    return MagicMock()
+def mock_manifestv10():
+    return MagicMock(
+        metadata={
+            "project_name": "package"
+        },
+        nodes={
+            "node_one": ModelV10(
+                database="test_db",
+                schema="test_schema",
+                name="test",
+                resource_type="model",
+                package_name="test_package",
+                path="/models/marts/test.sql",
+                original_file_path="/models/marts/test.sql",
+                unique_id="model.package.node_one",
+                fqn=[
+                    "package",
+                    "node_one",
+                ],
+                alias="",
+                checksum=FileHashV10(
+                    name="test",
+                    checksum="123abc",
+                ),
+                depends_on=DependsOnV10(
+                    nodes=[
+                        "source.package.source",
+                        "model.package.model",
+                    ]
+                ),
+            )
+        }
+    )
 
 
 @pytest.fixture
@@ -31,24 +83,22 @@ def mock_check_result():
     return CheckResult(
         name="test_check",
         status=CheckStatus.FAIL,
-        nodes=["node_1"],
+        nodes=["model.package.node_1"],
         resolution="resolve this.",
     )
 
 
 @patch("tidy.manifest.ManifestWrapper.load", autospec=True)
-@patch("tidy.sweeps.modeling.root_models.root_models")
-def test_cli(mock_root_models, mock_load_manifest, mock_manifest):
+def test_sweep_manifestv10(mock_load_manifest, mock_manifestv10):
     runner = click.testing.CliRunner()
     
-    mock_load_manifest.return_value = mock_manifest
+    mock_load_manifest.return_value = mock_manifestv10
 
     result = runner.invoke(
         cli, ["sweep"]
     )
-
-    assert result.exit_code == 0
     breakpoint()
+    assert result.exit_code == 0
 
 
 # @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")

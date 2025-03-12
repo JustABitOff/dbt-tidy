@@ -1,36 +1,14 @@
-import pytest
 from pathlib import Path
 import click.testing
 from unittest.mock import MagicMock, patch
 
 from tidy.sweeps.base import sweep
 from tidy.cli.cli import cli
-from tidy.config.tidy_config import TidyConfig
-
-
-@pytest.fixture
-def tidy_config_fixture():
-    config = MagicMock(spec=TidyConfig)
-    config.custom_sweeps_path = Path(".mock_tidy")
-    config.manifest_path = "mock_target/manifest.json"
-    config.mode = "all"
-    config.sweeps = []
-    config.load_from_yaml.return_value = "Mocked load behavior"
-
-    return config
 
 
 @sweep("Passing Custom Sweep")
 def passing_custom_sweep(manifest):
     return []
-
-
-def mock_exists(self):
-    return self == Path(".mock_tidy")
-
-
-def mock_rglob(self, pattern):
-    return [(self / "mock_user_sweep_one.py")]
 
 
 class TestSweepCommand:
@@ -49,8 +27,10 @@ class TestSweepCommand:
             mocked_manifest=manifestv12_fixture, tidy_config_fixture=tidy_config_fixture
         )
 
-    @patch.object(Path, "rglob", mock_rglob)
-    @patch.object(Path, "exists", mock_exists)
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
+    )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
     @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
     @patch("importlib.util.module_from_spec")
     @patch("tidy.cli.commands.sweep.TidyConfig")
@@ -89,8 +69,10 @@ class TestIncludeOption:
             mocked_manifest=manifestv12_fixture, tidy_config_fixture=tidy_config_fixture
         )
 
-    @patch.object(Path, "rglob", mock_rglob)
-    @patch.object(Path, "exists", mock_exists)
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
+    )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
     @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
     @patch("importlib.util.module_from_spec")
     @patch("tidy.cli.commands.sweep.TidyConfig")
@@ -130,8 +112,10 @@ class TestExcludeOption:
             mocked_manifest=manifestv12_fixture, tidy_config_fixture=tidy_config_fixture
         )
 
-    @patch.object(Path, "rglob", mock_rglob)
-    @patch.object(Path, "exists", mock_exists)
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
+    )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
     @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
     @patch("importlib.util.module_from_spec")
     @patch("tidy.cli.commands.sweep.TidyConfig")
@@ -171,8 +155,10 @@ class TestManifestOption:
             mocked_manifest=manifestv12_fixture, tidy_config_fixture=tidy_config_fixture
         )
 
-    @patch.object(Path, "rglob", mock_rglob)
-    @patch.object(Path, "exists", mock_exists)
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
+    )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
     @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
     @patch("importlib.util.module_from_spec")
     @patch("tidy.cli.commands.sweep.TidyConfig")
@@ -213,8 +199,10 @@ class TestUserSweeps:
             mocked_manifest=manifestv12_fixture, tidy_config_fixture=tidy_config_fixture
         )
 
-    @patch.object(Path, "rglob", mock_rglob)
-    @patch.object(Path, "exists", mock_exists)
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
+    )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
     @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
     @patch("importlib.util.module_from_spec")
     @patch("tidy.cli.commands.sweep.TidyConfig")

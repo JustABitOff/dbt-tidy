@@ -14,10 +14,10 @@ PACKAGE_NAME = "unit_test_package"
 @pytest.fixture
 def manifestv12_fixture():
     return ManifestV12(
-        metadata = ManifestMetadata(
+        metadata=ManifestMetadata(
             project_name=PACKAGE_NAME,
         ),
-        nodes = {
+        nodes={
             f"model.{PACKAGE_NAME}.stg_source_one__table_one": Model(
                 database="unit_test_db",
                 schema="staging",
@@ -35,9 +35,9 @@ def manifestv12_fixture():
                 checksum=FileHash(name="", checksum=""),
                 depends_on=DependsOn(
                     nodes=[
-                        "source.{PACKAGE_NAME}.source_one.table_one",
+                        f"source.{PACKAGE_NAME}.source_one.table_one",
                     ]
-                )
+                ),
             ),
             f"model.{PACKAGE_NAME}.stg_source_two__table_two": Model(
                 database="unit_test_db",
@@ -58,7 +58,7 @@ def manifestv12_fixture():
                     nodes=[
                         f"source.{PACKAGE_NAME}.source_two.table_two",
                     ]
-                )
+                ),
             ),
             f"model.{PACKAGE_NAME}.int_source_one__table_one": Model(
                 database="unit_test_db",
@@ -79,7 +79,7 @@ def manifestv12_fixture():
                     nodes=[
                         f"model.{PACKAGE_NAME}.stg_source_one__table_one",
                     ]
-                )
+                ),
             ),
             f"model.{PACKAGE_NAME}.int_source_two__table_two": Model(
                 database="unit_test_db",
@@ -100,7 +100,7 @@ def manifestv12_fixture():
                     nodes=[
                         f"model.{PACKAGE_NAME}.stg_source_two__table_two",
                     ]
-                )
+                ),
             ),
             f"model.{PACKAGE_NAME}.dim_one": Model(
                 database="unit_test_db",
@@ -121,7 +121,7 @@ def manifestv12_fixture():
                     nodes=[
                         f"model.{PACKAGE_NAME}.int_source_one__table_one",
                     ]
-                )
+                ),
             ),
             f"model.{PACKAGE_NAME}.fct_one": Model(
                 database="unit_test_db",
@@ -142,7 +142,7 @@ def manifestv12_fixture():
                     nodes=[
                         f"model.{PACKAGE_NAME}.int_source_one__table_one",
                     ]
-                )
+                ),
             ),
             f"model.{PACKAGE_NAME}.dim_two": Model(
                 database="unit_test_db",
@@ -163,7 +163,7 @@ def manifestv12_fixture():
                     nodes=[
                         f"model.{PACKAGE_NAME}.int_source_two__table_two",
                     ]
-                )
+                ),
             ),
             f"model.{PACKAGE_NAME}.fct_two": Model(
                 database="unit_test_db",
@@ -184,14 +184,14 @@ def manifestv12_fixture():
                     nodes=[
                         f"model.{PACKAGE_NAME}.int_source_two__table_two",
                     ]
-                )
+                ),
             ),
         },
-        sources = {
+        sources={
             f"source.{PACKAGE_NAME}.source_one.table_one": SourceDefinition(
                 database="unit_test_db",
                 schema="source_one",
-                name= "table_one",
+                name="table_one",
                 resource_type="source",
                 package_name=PACKAGE_NAME,
                 path="",
@@ -210,7 +210,7 @@ def manifestv12_fixture():
             f"source.{PACKAGE_NAME}.source_two.table_two": SourceDefinition(
                 database="unit_test_db",
                 schema="source_two",
-                name= "table_two",
+                name="table_two",
                 resource_type="source",
                 package_name=PACKAGE_NAME,
                 path="",
@@ -227,17 +227,17 @@ def manifestv12_fixture():
                 identifier="",
             ),
         },
-        macros = {},
-        docs = {},
-        exposures = {},
-        metrics = {},
-        groups = {},
-        selectors = {},
-        disabled = None,
-        parent_map = {},
-        child_map = {},
-        group_map = {},
-        semantic_models = {},
-        saved_queries = {},
-        unit_tests = {},
+        macros={},
+        docs={},
+        exposures={},
+        metrics={},
+        groups={},
+        selectors={},
+        disabled=None,
+        parent_map={},
+        child_map={},
+        group_map={},
+        semantic_models={},
+        saved_queries={},
+        unit_tests={},
     )

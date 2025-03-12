@@ -44,11 +44,11 @@ def sweep(name: str, resolution: Optional[str] = None):
             manifest: ManifestType,
         ) -> CheckResult:
             failures = func(manifest)
-            
+
             # TODO: Instead of post-filtering, we could filter the manifest before the sweep is run.
             failures = [
-                failure 
-                for failure in failures 
+                failure
+                for failure in failures
                 if failure.split(".")[1] == manifest.metadata.project_name
             ]
 

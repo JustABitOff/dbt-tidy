@@ -33,11 +33,18 @@ DEFAULT_CHECKS_PATH = importlib.resources.files(importlib.import_module("tidy.sw
     help="Path to save failures in JSON format. If not specified, no file is written.",
 )
 @click.option(
-    "--sweeps",
-    "-s",
+    "--include",
+    "-i",
     cls=OptionEatAll,
     type=tuple,
     help="List of check names to run. If not specified, all checks will be run.",
+)
+@click.option(
+    "--exclude",
+    "-e",
+    cls=OptionEatAll,
+    type=tuple,
+    help="List of check names to exclude from a run.",
 )
 @click.pass_context
 def sweep(
@@ -45,10 +52,11 @@ def sweep(
     manifest_path,
     max_details,
     output_failures,
-    sweeps,
+    include,
+    exclude,
 ):
     _set_context()
-    
+
     click.secho("Sweeping...", fg="cyan", bold=True)
     results = _discover_and_run_checks()
 
@@ -96,15 +104,19 @@ def _set_context(ctx):
 
     config = TidyConfig()
 
-    if ctx.params["sweeps"]:
+    if ctx.params["include"]:
         config.mode = "include"
-        config.sweeps = list(ctx.params["sweeps"])
+        config.sweeps = list(ctx.params["include"])
+
+    if ctx.params["exclude"]:
+        config.mode = "exclude"
+        config.sweeps = list(ctx.params["exclude"])
 
     if ctx.params["manifest_path"]:
         config.manifest_path = ctx.params["manifest_path"]
-    
+
     ctx.obj["tidy_config"] = config
-    
+
     ctx.obj["manifest"] = ManifestWrapper.load(config.manifest_path)
 
 
@@ -112,9 +124,11 @@ def _set_context(ctx):
 def _discover_and_run_checks(ctx):
     """Discovers and runs all available checks from both built-in and user-defined sources."""
     results = []
-    
+
     results.extend(_load_checks_from_package(str(DEFAULT_CHECKS_PATH), "tidy.sweeps."))
-    results.extend(_load_checks_from_directory(ctx.obj["tidy_config"].custom_sweeps_path))
+    results.extend(
+        _load_checks_from_directory(ctx.obj["tidy_config"].custom_sweeps_path)
+    )
 
     return results
 
@@ -126,7 +140,7 @@ def _load_checks_from_package(base_path: str, package_prefix: str):
     for _, module_name, ispkg in pkgutil.walk_packages([base_path], package_prefix):
         if ispkg:
             continue
-        
+
         try:
             module = importlib.import_module(module_name)
         except ImportError as e:
@@ -148,14 +162,13 @@ def _load_checks_from_directory(directory: Path):
     sys.path.insert(0, str(directory))
 
     for check_file in directory.rglob("*.py"):
-        
         module_name = (
             check_file.relative_to(directory)
             .with_suffix("")
             .as_posix()
             .replace("/", ".")
         )
-        
+
         try:
             module = _import_module_from_path(module_name, check_file)
         except ImportError as e:
@@ -172,7 +185,7 @@ def _run_checks_from_module(ctx, module):
     """Runs all checks defined in a module."""
     results = []
     tidy_config = ctx.obj["tidy_config"]
-    
+
     for attr_name in dir(module):
         attr = getattr(module, attr_name)
 
@@ -190,7 +203,7 @@ def _run_checks_from_module(ctx, module):
             check_result = attr(ctx.obj["manifest"])
             if isinstance(check_result, CheckResult):
                 results.append(check_result)
-    
+
     return results
 
 

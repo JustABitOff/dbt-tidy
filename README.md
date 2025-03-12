@@ -36,9 +36,9 @@ Nodes:
 ```
 
 ```bash
-#Use the --sweeps options to run a subset of sweeps
+#Use the --include options to run a subset of sweeps
 
-dbt-tidy sweep --sweeps root_models duplicate_sources
+dbt-tidy sweep --include root_models duplicate_sources
 ```
 
 ```bash
@@ -69,7 +69,7 @@ custom_sweeps_path: .tidy
 #`include`: Only run the specified sweeps.
 #`exclude`: Run all sweeps, except those specified.
 #`all`: Run all sweeps, regardless of what is defined in the sweeps list.
-#NOTE: The --sweeps cli option will always override what is specified in this file.
+#NOTE: The --include cli option will always override what is specified in this file.
 mode: include
 sweeps:
   - root_models
@@ -106,7 +106,7 @@ def no_ephemerals(manifest: ManifestType) -> list:
 Then you can run this custom `sweep` the same as any built-in `sweep`.
 ```bash
 #Run all built-in and custom sweeps
-dbt-tidy sweep --sweeps no_ephemerals
+dbt-tidy sweep --include no_ephemerals
 
 Sweeping...
 

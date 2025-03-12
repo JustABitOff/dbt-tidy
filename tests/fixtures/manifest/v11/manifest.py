@@ -388,3 +388,65 @@ def manifestv11_direct_join_to_source_fixture():
         semantic_models={},
         saved_queries={},
     )
+
+
+@pytest.fixture
+def manifestv11_duplicate_sources_fixture():
+    return ManifestV11(
+        metadata=ManifestMetadata(
+            project_name=PACKAGE_NAME,
+        ),
+        nodes={},
+        sources={
+            f"source.{PACKAGE_NAME}.source_one.table_one": SourceDefinition(
+                database="unit_test_db",
+                schema="source_one",
+                name="table_one",
+                resource_type="source",
+                package_name=PACKAGE_NAME,
+                path="",
+                original_file_path="",
+                unique_id=f"source.{PACKAGE_NAME}.source_one.table_one",
+                fqn=[
+                    PACKAGE_NAME,
+                    "source_one",
+                    "table_one",
+                ],
+                source_name="source_one",
+                source_description="",
+                loader="",
+                identifier="",
+            ),
+            f"source.{PACKAGE_NAME}.source_two.table_two": SourceDefinition(
+                database="unit_test_db",
+                schema="source_one",
+                name="table_one",
+                resource_type="source",
+                package_name=PACKAGE_NAME,
+                path="",
+                original_file_path="",
+                unique_id=f"source.{PACKAGE_NAME}.source_two.table_two",
+                fqn=[
+                    PACKAGE_NAME,
+                    "source_two",
+                    "table_two",
+                ],
+                source_name="source_two",
+                source_description="",
+                loader="",
+                identifier="",
+            ),
+        },
+        macros={},
+        docs={},
+        exposures={},
+        metrics={},
+        groups={},
+        selectors={},
+        disabled=None,
+        parent_map={},
+        child_map={},
+        group_map={},
+        semantic_models={},
+        saved_queries={},
+    )

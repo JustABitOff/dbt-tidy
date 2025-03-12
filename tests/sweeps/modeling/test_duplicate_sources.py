@@ -1,307 +1,98 @@
-from unittest.mock import MagicMock
+from pathlib import Path
+import click.testing
+from unittest.mock import patch
 
-from tidy.manifest.v10.sources.source_definition import (
-    SourceDefinition as SourceDefinitionV10,
-)
-from tidy.manifest.v11.sources.source_definition import (
-    SourceDefinition as SourceDefinitionV11,
-)
-from tidy.manifest.v12.sources.source_definition import (
-    SourceDefinition as SourceDefinitionV12,
-)
-from tidy.sweeps.base import CheckResult, CheckStatus
-from tidy.sweeps.modeling.duplicate_sources import duplicate_sources
+from tidy.cli.cli import cli
 
 
-def test_v10_manifest_duplicate_sources_fail():
-    mock_manifest = MagicMock(
-        sources={
-            "source_one": SourceDefinitionV10(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_one",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-            "source_two": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_two",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-        }
+class TestDuplicateSourcesPass:
+    def test_manifestv10(self, manifestv10_fixture, tidy_config_fixture):
+        self._run_cli(
+            mocked_manifest=manifestv10_fixture, tidy_config_fixture=tidy_config_fixture
+        )
+
+    def test_manifestv11(self, manifestv11_fixture, tidy_config_fixture):
+        self._run_cli(
+            mocked_manifest=manifestv11_fixture, tidy_config_fixture=tidy_config_fixture
+        )
+
+    def test_manifestv12(self, manifestv12_fixture, tidy_config_fixture):
+        self._run_cli(
+            mocked_manifest=manifestv12_fixture, tidy_config_fixture=tidy_config_fixture
+        )
+
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
     )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
+    @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
+    @patch("importlib.util.module_from_spec")
+    @patch("tidy.cli.commands.sweep.TidyConfig")
+    @patch("tidy.manifest.ManifestWrapper.load", autospec=True)
+    def _run_cli(
+        self,
+        mock_load_manifest,
+        mock_tidy_config,
+        mock_module_from_spec,
+        mock_spec_from_file_location,
+        mocked_manifest,
+        tidy_config_fixture,
+    ):
+        runner = click.testing.CliRunner()
 
-    result = duplicate_sources(mock_manifest)
+        mock_load_manifest.return_value = mocked_manifest
 
-    expected = CheckResult(
-        name=duplicate_sources.__sweep_name__,
-        status=CheckStatus.FAIL,
-        nodes=[
-            mock_manifest.sources.get("source_one").unique_id,
-            mock_manifest.sources.get("source_two").unique_id,
-        ],
-        resolution=duplicate_sources.__resolution__,
+        result = runner.invoke(cli, ["sweep", "--include", "duplicate_sources"])
+
+        assert result.exit_code == 0
+
+
+class TestDuplicateSourcesFail:
+    def test_manifestv10(
+        self, manifestv10_duplicate_sources_fixture, tidy_config_fixture
+    ):
+        self._run_cli(
+            mocked_manifest=manifestv10_duplicate_sources_fixture,
+            tidy_config_fixture=tidy_config_fixture,
+        )
+
+    def test_manifestv11(
+        self, manifestv11_duplicate_sources_fixture, tidy_config_fixture
+    ):
+        self._run_cli(
+            mocked_manifest=manifestv11_duplicate_sources_fixture,
+            tidy_config_fixture=tidy_config_fixture,
+        )
+
+    def test_manifestv12(
+        self, manifestv12_duplicate_sources_fixture, tidy_config_fixture
+    ):
+        self._run_cli(
+            mocked_manifest=manifestv12_duplicate_sources_fixture,
+            tidy_config_fixture=tidy_config_fixture,
+        )
+
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
     )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
+    @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
+    @patch("importlib.util.module_from_spec")
+    @patch("tidy.cli.commands.sweep.TidyConfig")
+    @patch("tidy.manifest.ManifestWrapper.load", autospec=True)
+    def _run_cli(
+        self,
+        mock_load_manifest,
+        mock_tidy_config,
+        mock_module_from_spec,
+        mock_spec_from_file_location,
+        mocked_manifest,
+        tidy_config_fixture,
+    ):
+        runner = click.testing.CliRunner()
 
-    assert result == expected
+        mock_load_manifest.return_value = mocked_manifest
 
+        result = runner.invoke(cli, ["sweep", "--include", "duplicate_sources"])
 
-def test_v10_manifest_duplicate_sources_pass():
-    mock_manifest = MagicMock(
-        sources={
-            "source_one": SourceDefinitionV10(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_one",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-            "source_two": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table_two",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_two",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-        }
-    )
-
-    result = duplicate_sources(mock_manifest)
-
-    expected = CheckResult(
-        name=duplicate_sources.__sweep_name__,
-        status=CheckStatus.PASS,
-        nodes=[],
-    )
-
-    assert result == expected
-
-
-def test_v11_manifest_duplicate_sources_fail():
-    mock_manifest = MagicMock(
-        sources={
-            "source_one": SourceDefinitionV11(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_one",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-            "source_two": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_two",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-        }
-    )
-
-    result = duplicate_sources(mock_manifest)
-
-    expected = CheckResult(
-        name=duplicate_sources.__sweep_name__,
-        status=CheckStatus.FAIL,
-        nodes=[
-            mock_manifest.sources.get("source_one").unique_id,
-            mock_manifest.sources.get("source_two").unique_id,
-        ],
-        resolution=duplicate_sources.__resolution__,
-    )
-
-    assert result == expected
-
-
-def test_v11_manifest_duplicate_sources_pass():
-    mock_manifest = MagicMock(
-        sources={
-            "source_one": SourceDefinitionV11(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_one",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-            "source_two": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table_two",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_two",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-        }
-    )
-
-    result = duplicate_sources(mock_manifest)
-
-    expected = CheckResult(
-        name=duplicate_sources.__sweep_name__,
-        status=CheckStatus.PASS,
-        nodes=[],
-    )
-
-    assert result == expected
-
-
-def test_v12_manifest_duplicate_sources_fail():
-    mock_manifest = MagicMock(
-        sources={
-            "source_one": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_one",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-            "source_two": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_two",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-        }
-    )
-
-    result = duplicate_sources(mock_manifest)
-
-    expected = CheckResult(
-        name=duplicate_sources.__sweep_name__,
-        status=CheckStatus.FAIL,
-        nodes=[
-            mock_manifest.sources.get("source_one").unique_id,
-            mock_manifest.sources.get("source_two").unique_id,
-        ],
-        resolution=duplicate_sources.__resolution__,
-    )
-
-    assert result == expected
-
-
-def test_v12_manifest_duplicate_sources_pass():
-    mock_manifest = MagicMock(
-        sources={
-            "source_one": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_one",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-            "source_two": SourceDefinitionV12(
-                database="mock_db",
-                schema="mock_schema",
-                name="mock_table_two",
-                resource_type="source",
-                package_name="mock_package",
-                path="sources.mock",
-                original_file_path="/sources/mock",
-                unique_id="mock_package.source_two",
-                fqn=[""],
-                source_name="",
-                source_description="",
-                loader="",
-                identifier="",
-            ),
-        }
-    )
-
-    result = duplicate_sources(mock_manifest)
-
-    expected = CheckResult(
-        name=duplicate_sources.__sweep_name__,
-        status=CheckStatus.PASS,
-        nodes=[],
-    )
-
-    assert result == expected
+        assert result.exit_code == 1

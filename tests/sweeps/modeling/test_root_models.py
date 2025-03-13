@@ -1,247 +1,98 @@
-from unittest.mock import MagicMock
+from pathlib import Path
+import click.testing
+from unittest.mock import patch
 
-from tidy.manifest.v10.nodes.models.model import (
-    ModelNode as ModelV10,
-)
-from tidy.manifest.v10.bases.depends_on import (
-    DependsOn as DependsOnV10,
-)
-from tidy.manifest.v10.bases.file_hash import FileHash as FileHashV10
-from tidy.manifest.v11.nodes.models.model import (
-    Model as ModelV11,
-)
-from tidy.manifest.v11.bases.depends_on import (
-    DependsOn as DependsOnV11,
-)
-from tidy.manifest.v11.bases.file_hash import FileHash as FileHashV11
-from tidy.manifest.v12.nodes.models.model import (
-    Model as ModelV12,
-)
-from tidy.manifest.v12.bases.depends_on import (
-    DependsOn as DependsOnV12,
-)
-from tidy.manifest.v12.bases.file_hash import FileHash as FileHashV12
-from tidy.sweeps.base import CheckResult, CheckStatus
-from tidy.sweeps.modeling.root_models import root_models
+from tidy.cli.cli import cli
 
 
-def test_manifest_v10_root_models_fail():
-    mock_manifest = MagicMock(
-        nodes={
-            "node_one": ModelV10(
-                database="",
-                schema="",
-                name="",
-                resource_type="model",
-                package_name="",
-                path="",
-                original_file_path="",
-                unique_id="package.node_one",
-                fqn=[""],
-                alias="",
-                checksum=FileHashV10(
-                    name="",
-                    checksum="",
-                ),
-                depends_on=DependsOnV10(nodes=[]),
-            )
-        }
+class TestRootModelsPass:
+    def test_manifestv10(self, manifestv10_fixture, tidy_config_fixture):
+        self._run_cli(
+            mocked_manifest=manifestv10_fixture, tidy_config_fixture=tidy_config_fixture
+        )
+
+    def test_manifestv11(self, manifestv11_fixture, tidy_config_fixture):
+        self._run_cli(
+            mocked_manifest=manifestv11_fixture, tidy_config_fixture=tidy_config_fixture
+        )
+
+    def test_manifestv12(self, manifestv12_fixture, tidy_config_fixture):
+        self._run_cli(
+            mocked_manifest=manifestv12_fixture, tidy_config_fixture=tidy_config_fixture
+        )
+
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
     )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
+    @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
+    @patch("importlib.util.module_from_spec")
+    @patch("tidy.cli.commands.sweep.TidyConfig")
+    @patch("tidy.manifest.ManifestWrapper.load", autospec=True)
+    def _run_cli(
+        self,
+        mock_load_manifest,
+        mock_tidy_config,
+        mock_module_from_spec,
+        mock_spec_from_file_location,
+        mocked_manifest,
+        tidy_config_fixture,
+    ):
+        runner = click.testing.CliRunner()
 
-    result = root_models(mock_manifest)
+        mock_load_manifest.return_value = mocked_manifest
 
-    expected = CheckResult(
-        name=root_models.__sweep_name__,
-        status=CheckStatus.FAIL,
-        nodes=[mock_manifest.nodes.get("node_one").unique_id],
-        resolution=root_models.__resolution__,
+        result = runner.invoke(cli, ["sweep", "--include", "root_models"])
+
+        assert result.exit_code == 0
+
+
+class TestRootModelsFail:
+    def test_manifestv10(
+        self, manifestv10_root_models_fixture, tidy_config_fixture
+    ):
+        self._run_cli(
+            mocked_manifest=manifestv10_root_models_fixture,
+            tidy_config_fixture=tidy_config_fixture,
+        )
+
+    def test_manifestv11(
+        self, manifestv11_root_models_fixture, tidy_config_fixture
+    ):
+        self._run_cli(
+            mocked_manifest=manifestv11_root_models_fixture,
+            tidy_config_fixture=tidy_config_fixture,
+        )
+
+    def test_manifestv12(
+        self, manifestv12_root_models_fixture, tidy_config_fixture
+    ):
+        self._run_cli(
+            mocked_manifest=manifestv12_root_models_fixture,
+            tidy_config_fixture=tidy_config_fixture,
+        )
+
+    @patch.object(
+        Path, "rglob", lambda self, pattern: [(self / "mock_user_sweep_one.py")]
     )
+    @patch.object(Path, "exists", lambda self: self == Path(".mock_tidy"))
+    @patch("tidy.cli.commands.sweep.importlib.util.spec_from_file_location")
+    @patch("importlib.util.module_from_spec")
+    @patch("tidy.cli.commands.sweep.TidyConfig")
+    @patch("tidy.manifest.ManifestWrapper.load", autospec=True)
+    def _run_cli(
+        self,
+        mock_load_manifest,
+        mock_tidy_config,
+        mock_module_from_spec,
+        mock_spec_from_file_location,
+        mocked_manifest,
+        tidy_config_fixture,
+    ):
+        runner = click.testing.CliRunner()
 
-    assert result == expected
+        mock_load_manifest.return_value = mocked_manifest
 
-
-def test_manifest_v10_root_models_pass():
-    mock_manifest = MagicMock(
-        nodes={
-            "node_one": ModelV10(
-                database="",
-                schema="",
-                name="",
-                resource_type="model",
-                package_name="",
-                path="",
-                original_file_path="",
-                unique_id="package.node_one",
-                fqn=[""],
-                alias="",
-                checksum=FileHashV10(
-                    name="",
-                    checksum="",
-                ),
-                depends_on=DependsOnV10(
-                    nodes=[
-                        "model.model_two",
-                        "model.model",
-                    ]
-                ),
-            )
-        }
-    )
-
-    result = root_models(mock_manifest)
-
-    expected = CheckResult(
-        name=root_models.__sweep_name__,
-        status=CheckStatus.PASS,
-        nodes=[],
-    )
-
-    assert result == expected
-
-
-def test_manifest_v11_root_models_fail():
-    mock_manifest = MagicMock(
-        nodes={
-            "node_one": ModelV11(
-                database="",
-                schema="",
-                name="",
-                resource_type="model",
-                package_name="",
-                path="",
-                original_file_path="",
-                unique_id="package.node_one",
-                fqn=[""],
-                alias="",
-                checksum=FileHashV11(
-                    name="",
-                    checksum="",
-                ),
-                depends_on=DependsOnV11(nodes=[]),
-            )
-        }
-    )
-
-    result = root_models(mock_manifest)
-
-    expected = CheckResult(
-        name=root_models.__sweep_name__,
-        status=CheckStatus.FAIL,
-        nodes=[mock_manifest.nodes.get("node_one").unique_id],
-        resolution=root_models.__resolution__,
-    )
-
-    assert result == expected
-
-
-def test_manifest_v11_root_models_pass():
-    mock_manifest = MagicMock(
-        nodes={
-            "node_one": ModelV11(
-                database="",
-                schema="",
-                name="",
-                resource_type="model",
-                package_name="",
-                path="",
-                original_file_path="",
-                unique_id="package.node_one",
-                fqn=[""],
-                alias="",
-                checksum=FileHashV11(
-                    name="",
-                    checksum="",
-                ),
-                depends_on=DependsOnV11(
-                    nodes=[
-                        "model.model_two",
-                        "model.model",
-                    ]
-                ),
-            )
-        }
-    )
-
-    result = root_models(mock_manifest)
-
-    expected = CheckResult(
-        name=root_models.__sweep_name__,
-        status=CheckStatus.PASS,
-        nodes=[],
-    )
-
-    assert result == expected
-
-
-def test_manifest_v12_root_models_fail():
-    mock_manifest = MagicMock(
-        nodes={
-            "node_one": ModelV12(
-                database="",
-                schema="",
-                name="",
-                resource_type="model",
-                package_name="",
-                path="",
-                original_file_path="",
-                unique_id="package.node_one",
-                fqn=[""],
-                alias="",
-                checksum=FileHashV12(
-                    name="",
-                    checksum="",
-                ),
-                depends_on=DependsOnV12(nodes=[]),
-            )
-        }
-    )
-
-    result = root_models(mock_manifest)
-
-    expected = CheckResult(
-        name=root_models.__sweep_name__,
-        status=CheckStatus.FAIL,
-        nodes=[mock_manifest.nodes.get("node_one").unique_id],
-        resolution=root_models.__resolution__,
-    )
-
-    assert result == expected
-
-
-def test_manifest_v12_root_models_pass():
-    mock_manifest = MagicMock(
-        nodes={
-            "node_one": ModelV12(
-                database="",
-                schema="",
-                name="",
-                resource_type="model",
-                package_name="",
-                path="",
-                original_file_path="",
-                unique_id="package.node_one",
-                fqn=[""],
-                alias="",
-                checksum=FileHashV12(
-                    name="",
-                    checksum="",
-                ),
-                depends_on=DependsOnV12(
-                    nodes=[
-                        "model.model_two",
-                        "model.model",
-                    ]
-                ),
-            )
-        }
-    )
-
-    result = root_models(mock_manifest)
-
-    expected = CheckResult(
-        name=root_models.__sweep_name__,
-        status=CheckStatus.PASS,
-        nodes=[],
-    )
-
-    assert result == expected
+        result = runner.invoke(cli, ["sweep", "--include", "root_models"])
+        
+        assert result.exit_code == 1

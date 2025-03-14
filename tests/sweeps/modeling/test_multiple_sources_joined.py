@@ -94,5 +94,5 @@ class TestMultipleSourcesJoinedFail:
         mock_load_manifest.return_value = mocked_manifest
 
         result = runner.invoke(cli, ["sweep", "--include", "multiple_sources_joined"])
-        
+
         assert result.exit_code == 1

@@ -48,25 +48,19 @@ class TestModelFanoutPass:
 
 
 class TestModelFanoutFail:
-    def test_manifestv10(
-        self, manifestv10_model_fanout_fixture, tidy_config_fixture
-    ):
+    def test_manifestv10(self, manifestv10_model_fanout_fixture, tidy_config_fixture):
         self._run_cli(
             mocked_manifest=manifestv10_model_fanout_fixture,
             tidy_config_fixture=tidy_config_fixture,
         )
 
-    def test_manifestv11(
-        self, manifestv11_model_fanout_fixture, tidy_config_fixture
-    ):
+    def test_manifestv11(self, manifestv11_model_fanout_fixture, tidy_config_fixture):
         self._run_cli(
             mocked_manifest=manifestv11_model_fanout_fixture,
             tidy_config_fixture=tidy_config_fixture,
         )
 
-    def test_manifestv12(
-        self, manifestv12_model_fanout_fixture, tidy_config_fixture
-    ):
+    def test_manifestv12(self, manifestv12_model_fanout_fixture, tidy_config_fixture):
         self._run_cli(
             mocked_manifest=manifestv12_model_fanout_fixture,
             tidy_config_fixture=tidy_config_fixture,
@@ -94,5 +88,5 @@ class TestModelFanoutFail:
         mock_load_manifest.return_value = mocked_manifest
 
         result = runner.invoke(cli, ["sweep", "--include", "model_fanout"])
-        
+
         assert result.exit_code == 1

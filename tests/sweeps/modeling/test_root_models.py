@@ -48,25 +48,19 @@ class TestRootModelsPass:
 
 
 class TestRootModelsFail:
-    def test_manifestv10(
-        self, manifestv10_root_models_fixture, tidy_config_fixture
-    ):
+    def test_manifestv10(self, manifestv10_root_models_fixture, tidy_config_fixture):
         self._run_cli(
             mocked_manifest=manifestv10_root_models_fixture,
             tidy_config_fixture=tidy_config_fixture,
         )
 
-    def test_manifestv11(
-        self, manifestv11_root_models_fixture, tidy_config_fixture
-    ):
+    def test_manifestv11(self, manifestv11_root_models_fixture, tidy_config_fixture):
         self._run_cli(
             mocked_manifest=manifestv11_root_models_fixture,
             tidy_config_fixture=tidy_config_fixture,
         )
 
-    def test_manifestv12(
-        self, manifestv12_root_models_fixture, tidy_config_fixture
-    ):
+    def test_manifestv12(self, manifestv12_root_models_fixture, tidy_config_fixture):
         self._run_cli(
             mocked_manifest=manifestv12_root_models_fixture,
             tidy_config_fixture=tidy_config_fixture,
@@ -94,5 +88,5 @@ class TestRootModelsFail:
         mock_load_manifest.return_value = mocked_manifest
 
         result = runner.invoke(cli, ["sweep", "--include", "root_models"])
-        
+
         assert result.exit_code == 1

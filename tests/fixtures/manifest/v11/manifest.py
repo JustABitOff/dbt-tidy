@@ -861,7 +861,7 @@ def manifestv11_model_fanout_fixture():
             ],
             f"model.{PACKAGE_NAME}.fct_five": [
                 f"model.{PACKAGE_NAME}.int_source_two__table_two",
-            ],                      
+            ],
             f"source.{PACKAGE_NAME}.source_one.table_one": [],
             f"source.{PACKAGE_NAME}.source_two.table_two": [],
         },
@@ -1105,9 +1105,7 @@ def manifestv11_root_models_fixture():
                 ],
                 alias="stg_source_one__table_one",
                 checksum=FileHash(name="", checksum=""),
-                depends_on=DependsOn(
-                    nodes=[]
-                ),
+                depends_on=DependsOn(nodes=[]),
             ),
             f"model.{PACKAGE_NAME}.stg_source_two__table_two": Model(
                 database="unit_test_db",

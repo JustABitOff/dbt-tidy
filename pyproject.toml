@@ -28,7 +28,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/JustABitOff/tidy"
+GitHub = "https://github.com/JustABitOff/dbt-tidy"
 
 [tool.poetry]
 packages = [

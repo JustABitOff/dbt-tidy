@@ -3,6 +3,7 @@ from typing import Optional, List
 from functools import wraps
 from typing import Callable
 
+import click
 from pydantic import BaseModel
 
 from tidy.manifest.utils.types import ManifestType
@@ -39,24 +40,37 @@ def sweep(name: str, resolution: Optional[str] = None):
             list,
         ],
     ):
+        @click.pass_context
         @wraps(func)
         def wrapped_sweep(
+            ctx, 
             manifest: ManifestType,
         ) -> CheckResult:
             failures = func(manifest)
+            
+            if not ctx.params["dbt_unique_ids"]:
+                return CheckResult(
+                    name=name,
+                    status=CheckStatus.PASS if not failures else CheckStatus.FAIL,
+                    nodes=failures,
+                    resolution=resolution if failures else None,
+                )
 
             # TODO: Instead of post-filtering, we could filter the manifest before the sweep is run.
-            failures = [
+            filtered_failures = [
                 failure
                 for failure in failures
-                if failure.split(".")[1] == manifest.metadata.project_name
+                if (
+                    failure.split(".")[1] == manifest.metadata.project_name
+                    and failure in ctx.params["dbt_unique_ids"]
+                )
             ]
-
+            
             return CheckResult(
                 name=name,
-                status=CheckStatus.PASS if not failures else CheckStatus.FAIL,
-                nodes=failures,
-                resolution=resolution if failures else None,
+                status=CheckStatus.PASS if not filtered_failures else CheckStatus.FAIL,
+                nodes=filtered_failures,
+                resolution=resolution if filtered_failures else None,
             )
 
         wrapped_sweep.__is_sweep__ = True

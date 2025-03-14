@@ -47,10 +47,9 @@ def sweep(name: str, resolution: Optional[str] = None):
 
             # TODO: Instead of post-filtering, we could filter the manifest before the sweep is run.
             failures = [
-                failure 
-                for failure in failures 
-                if len(failure.split(".")) == 3
-                and failure.split(".")[1] == manifest.metadata.project_name
+                failure
+                for failure in failures
+                if failure.split(".")[1] == manifest.metadata.project_name
             ]
 
             return CheckResult(

@@ -15,6 +15,7 @@ DEFAULT_CHECKS_PATH = importlib.resources.files(importlib.import_module("tidy.sw
 
 
 @click.command()
+@click.argument("dbt_unique_ids", nargs=-1, type=click.Path())
 @click.option(
     "--manifest-path",
     help="Path to the dbt manifest file.",
@@ -49,6 +50,7 @@ DEFAULT_CHECKS_PATH = importlib.resources.files(importlib.import_module("tidy.sw
 @click.pass_context
 def sweep(
     ctx,
+    dbt_unique_ids,
     manifest_path,
     max_details,
     output_failures,

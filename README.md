@@ -35,6 +35,13 @@ Nodes:
   ...and 5 more
 ```
 
+
+```bash
+#Use the dbt_unique_ids argument to run sweeps against a subset of dbt objects
+
+dbt-tidy sweep model.your_package.model_name test.your_package.test_name.abcde12345 seed.your_package.seed_name
+```
+
 ```bash
 #Use the --include options to run a subset of sweeps
 

@@ -48,7 +48,6 @@ def sweep(name: str, resolution: Optional[str] = None):
         ) -> CheckResult:
             failures = func(manifest)
             
-            # TODO: Instead of post-filtering, we could filter the manifest before the sweep is run.
             if not ctx.params["dbt_unique_ids"]:
                 return CheckResult(
                     name=name,
@@ -57,6 +56,7 @@ def sweep(name: str, resolution: Optional[str] = None):
                     resolution=resolution if failures else None,
                 )
 
+            # TODO: Instead of post-filtering, we could filter the manifest before the sweep is run.
             filtered_failures = [
                 failure
                 for failure in failures
